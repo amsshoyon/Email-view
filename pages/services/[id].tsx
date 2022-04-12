@@ -2,8 +2,8 @@ import AttachmentForm from '@components/Forms/AttachmentForm'
 import { Button, Divider, Grid, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 
-const services = () => {
-	const [attachments, setAttachments] = useState([])
+const SingleService = () => {
+    const [attachments, setAttachments] = useState([])
 
 	const addAttachment = ()=> {
 		setAttachments(attachments.concat(<AttachmentForm count={attachments.length + 1} />))
@@ -38,4 +38,4 @@ const services = () => {
 	)
 }
 
-export default services
+export default SingleService

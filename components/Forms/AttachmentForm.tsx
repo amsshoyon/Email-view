@@ -1,7 +1,11 @@
 import { Divider, Grid, TextField, Typography } from '@mui/material'
 import React from 'react'
 
-const AttachmentForm = ({count}) => {
+interface AttachmentFormProps {
+    count: number
+}
+
+const AttachmentForm = ({count}: AttachmentFormProps) => {
     return (
         <React.Fragment>
             <Typography variant='h5' mb={4}>Attachment {count}</Typography>
