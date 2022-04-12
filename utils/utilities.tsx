@@ -9,11 +9,10 @@ interface CustomLinkProps {
 export const CustomLink = ({href, children, className, button}: CustomLinkProps) => {
     return (
         <Link href={href} passHref>
-            {button ? 
-            <Button className={className}>{children}</Button>
-            : <a className={className}>{children}</a>
+            {button 
+                ? <Button className={className}>{children}</Button>
+                : <a className={className}>{children}</a>
             }
-            
         </Link>
     )
 }

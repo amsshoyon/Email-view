@@ -5,7 +5,7 @@ const themeConstants = {
 	paper: "#FAFAFA",
 	primary: {
 		main: "#000",
-		dark: "#000",
+		dark: "#1c1c1c",
 		light: "#fff",
 	},
 	error: {

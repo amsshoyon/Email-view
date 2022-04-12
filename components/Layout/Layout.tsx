@@ -1,5 +1,5 @@
-import { Grid } from '@mui/material'
-import React, { useState } from 'react'
+import {Box, CssBaseline, Toolbar } from '@mui/material'
+import React from 'react'
 import Header from './Header';
 import Sidebar from './Sidebar'
 
@@ -10,19 +10,15 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
 
     return (
-        <React.Fragment>
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
             <Header />
-            <Grid container spacing={2} sx={{ height: 'calc(100vh - 64px)'}}>
-                <Grid item xs={2} className="h-full">
-                    <Sidebar />
-                </Grid>
-                <Grid item xs={10}>
-                    <div className="py-4 pr-3">
-                        {children}
-                    </div>
-                </Grid>
-            </Grid>
-        </React.Fragment>
+            <Sidebar />
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <Toolbar />
+                {children}
+            </Box>
+        </Box>
     )
 }
 
