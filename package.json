@@ -13,10 +13,12 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.2",
+    "formic": "^0.0.10",
     "next": "12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "sass": "^1.49.9"
+    "sass": "^1.49.9",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "17.0.22",

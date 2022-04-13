@@ -1,7 +1,8 @@
-import { Button, Chip, TextField, Typography } from "@mui/material"
+import { Button, Chip, Stack, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import Link from "next/link"
 import React, { SetStateAction, useState } from "react"
+import { EmailRegex } from "./validator"
 
 interface CustomLinkProps {
     href: URL | string,
@@ -72,8 +73,9 @@ export const MultiValueInput = (props: MultiValueInputProps) => {
     const [currValue, setCurrValue] = useState<string>("");
 
     const handleKeyUp = (e: any): void => {
-        if (e.keyCode == 32 && e.target.value.trim()) {
-            setValues([...values, e.target.value]);
+        let value = e.target.value;
+        if (e.keyCode == 32 && value.trim() && EmailRegex.test(value)) {
+            setValues([...values, value]);
             setCurrValue("");
         }
     };
@@ -88,18 +90,26 @@ export const MultiValueInput = (props: MultiValueInputProps) => {
         setValues(arr)
     }
 
+    const StackLabel = ()=> {
+        return (
+            <React.Fragment>
+                {values.length ?
+                <Stack direction="row" spacing={1} className="mb-2">
+                    {values.map((item, i) => (
+                        <Chip variant="outlined" size="small" onDelete={() => handleDelete(item, i)} label={item} key={i} className="mr-2" />
+                    ))}
+                </Stack> 
+                : <></>
+            }
+            </React.Fragment>
+        )
+    }
+
     return (
         <React.Fragment>
-            <Box className="mb-2">
-                {values.length ?
-                    <div className="container">
-                        {values.map((item, i) => (
-                            <Chip size="small" onDelete={() => handleDelete(item, i)} label={item} key={i} className="mr-2" />
-                        ))}
-                    </div>
-                    : <></>
-                }
-            </Box>
+            
+            {StackLabel()}
+
             <TextField value={currValue}
                 onChange={handleChange}
                 onKeyDown={handleKeyUp}
