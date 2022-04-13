@@ -4,18 +4,10 @@ import { FileInput, FormGroup, MultiValueInput } from '@utils/utilities'
 import React, { useState } from 'react'
 
 const SingleService = () => {
-	const [attachments, setAttachments] = useState<JSX.Element[]>([])
+	const [attachments, setAttachments] = useState<number[]>([])
 	
 	const addAttachment = () => {
-		let newArr = [...attachments]
-		newArr.push(
-			<AttachmentForm 
-				count={attachments.length + 1} 
-				key={attachments.length} 
-				onDelete={removeAttachmentByIndex}
-			/>
-		)
-		setAttachments(newArr)
+		setAttachments([...attachments, attachments.length])
 	}
 
 	const removeAttachmentByIndex = ( index: number ): void => {
@@ -50,7 +42,11 @@ const SingleService = () => {
 			</Grid>
 
 			<Divider className='mb-6' />
-			{attachments.map((attachment, i) => <React.Fragment key={i}>{attachment}</React.Fragment> )}
+			{attachments.map((key, i) => <AttachmentForm 
+				count={i + 1} 
+				key={i} 
+				onDelete={removeAttachmentByIndex}
+			/> )}
 
 			<div className="flex">
 				<Button variant="contained" color='info' className='mr-3'>Save</Button>
