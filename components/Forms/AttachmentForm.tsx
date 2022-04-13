@@ -1,26 +1,37 @@
-import { Divider, Grid, TextField, Typography } from '@mui/material'
+import { Grid, IconButton, TextField, Typography } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { Box } from '@mui/system'
 import React from 'react'
+import { FileInput } from '@utils/utilities'
 
 interface AttachmentFormProps {
-    count: number
+    count: number,
+    className?: string
 }
 
-const AttachmentForm = ({count}: AttachmentFormProps) => {
+const AttachmentForm = ({ count, className }: AttachmentFormProps) => {
     return (
-        <React.Fragment>
-            <Typography variant='h5' mb={4}>Attachment {count}</Typography>
-            <Grid container spacing={2}>
+        <Box className={className}>
+            <Box className="flex items-center justify-between mb-4">
+                <Typography variant='h5'>Attachment {count}</Typography>
+                <IconButton color='error'>
+                    <DeleteIcon />
+                </IconButton>
+            </Box>
+            <Grid container spacing={2} className="mb-3">
                 <Grid item xs={4}>
-                    <div className="mb-3">
-                        <TextField label="Attachment template name" fullWidth />
-                    </div>
+                    <Box className="mb-3">
+                        <FileInput label="Choose Template"
+							accept=".html, .ejs"
+							onChange={(e)=>console.log(e)}
+						/>
+                    </Box>
                 </Grid>
                 <Grid item xs={8}>
                     <TextField label="Json formate for Attachment body " fullWidth multiline rows={7} />
                 </Grid>
             </Grid>
-            <Divider className='mb-3'/>
-        </React.Fragment>
+        </Box>
     )
 }
 
