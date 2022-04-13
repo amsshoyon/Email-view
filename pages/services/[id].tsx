@@ -4,10 +4,24 @@ import { FileInput, FormGroup, MultiValueInput } from '@utils/utilities'
 import React, { useState } from 'react'
 
 const SingleService = () => {
-	const [attachments, setAttachments] = useState<number[]>([])
-
+	const [attachments, setAttachments] = useState<JSX.Element[]>([])
+	
 	const addAttachment = () => {
-		setAttachments([...attachments, attachments.length])
+		let newArr = [...attachments]
+		newArr.push(
+			<AttachmentForm 
+				count={attachments.length + 1} 
+				key={attachments.length} 
+				onDelete={removeAttachmentByIndex}
+			/>
+		)
+		setAttachments(newArr)
+	}
+
+	const removeAttachmentByIndex = ( index: number ): void => {
+		console.log('index:', index)
+		let newArr = [...attachments];
+		console.log('newArr:', newArr)
 	}
 
 	return (
@@ -30,14 +44,13 @@ const SingleService = () => {
 
 				<Grid item xs={8}>
 					<FormGroup label='JSON format'>
-						<TextField label="Json formate for email body " fullWidth multiline rows={11} />
+						<TextField fullWidth multiline rows={11} />
 					</FormGroup>
 				</Grid>
 			</Grid>
 
 			<Divider className='mb-6' />
-			{attachments.map(i => <AttachmentForm count={i + 1} key={i} />)}
-			<Divider className='mb-8' />
+			{attachments.map((attachment, i) => <React.Fragment key={i}>{attachment}</React.Fragment> )}
 
 			<div className="flex">
 				<Button variant="contained" color='info' className='mr-3'>Save</Button>
