@@ -94,11 +94,16 @@ export const MultiValueInput = (props: MultiValueInputProps) => {
         return (
             <React.Fragment>
                 {values.length ?
-                <Stack direction="row" spacing={1} className="mb-2">
+                <Box className="mb-2 flex" sx={{flexWrap: 'wrap'}}>
                     {values.map((item, i) => (
-                        <Chip variant="outlined" size="small" onDelete={() => handleDelete(item, i)} label={item} key={i} className="mr-2" />
+                        <Chip variant="outlined" 
+                            size="small" 
+                            onDelete={() => handleDelete(item, i)} 
+                            label={item} key={i} 
+                            sx={{margin: '0 4px 4px 0'}}
+                        />
                     ))}
-                </Stack> 
+                </Box> 
                 : <></>
             }
             </React.Fragment>

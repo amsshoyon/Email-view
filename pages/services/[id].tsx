@@ -30,7 +30,7 @@ const SingleService = () => {
 
 				<Grid item xs={8}>
 					<FormGroup label='JSON format'>
-						<TextField label="Json formate for email body " fullWidth multiline rows={7} />
+						<TextField label="Json formate for email body " fullWidth multiline rows={11} />
 					</FormGroup>
 				</Grid>
 			</Grid>
