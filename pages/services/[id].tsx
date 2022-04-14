@@ -1,7 +1,7 @@
 import AttachmentForm from '@components/Forms/AttachmentForm'
 import { Button, Divider, Grid, TextField, Typography } from '@mui/material'
 import { Notify } from '@utils/common'
-import { FileInput, FormGroup, MultiValueInput } from '@utils/utilities'
+import { FileInput, FormGroup, MultiValueInput } from '@utils/FormElements'
 import React, { useState } from 'react'
 
 const SingleService = () => {

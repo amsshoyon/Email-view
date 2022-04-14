@@ -2,7 +2,7 @@ import { Divider, Grid, IconButton, TextField, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Box } from '@mui/system'
 import React from 'react'
-import { FileInput, FormGroup } from '@utils/utilities'
+import { FileInput, FormGroup } from '@utils/FormElements'
 
 interface AttachmentFormProps {
     count: number,

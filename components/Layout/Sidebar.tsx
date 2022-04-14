@@ -1,5 +1,5 @@
 import { Box, Drawer, List, Toolbar, Typography } from '@mui/material'
-import { CustomLink } from '@utils/utilities'
+import { CustomLink } from '@utils/common'
 import HomeIcon from '@mui/icons-material/Home';
 import React from 'react'
 import { Theme } from '@helpers/theme';

@@ -5,7 +5,7 @@ import { ThemeProvider } from '@emotion/react'
 import { Theme } from 'helpers/theme'
 import Head from 'next/head'
 import { ToastContainer } from 'material-react-toastify';
-import '../styles/globals.css'
+import '../styles/globals.scss'
 import 'material-react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
