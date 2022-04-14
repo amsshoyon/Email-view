@@ -1,5 +1,6 @@
 import AttachmentForm from '@components/Forms/AttachmentForm'
 import { Button, Divider, Grid, TextField, Typography } from '@mui/material'
+import { Notify } from '@utils/common'
 import { FileInput, FormGroup, MultiValueInput } from '@utils/utilities'
 import React, { useState } from 'react'
 
@@ -11,7 +12,8 @@ const SingleService = () => {
 	}
 
 	const removeAttachmentByIndex = ( index: number ): void => {
-		if(confirm("Delete field?")) setAttachments(attachments.filter(item=> item !== index))
+		if(confirm("Delete field?")) setAttachments(attachments.filter(item=> item !== index));
+		Notify('Field deleted', 'success');
 	}
 
 	return (
