@@ -11,7 +11,7 @@ const SingleService = () => {
 	}
 
 	const removeAttachmentByIndex = ( index: number ): void => {
-		setAttachments(attachments.filter(item=> item !== index))
+		if(confirm("Delete field?")) setAttachments(attachments.filter(item=> item !== index))
 	}
 
 	return (
