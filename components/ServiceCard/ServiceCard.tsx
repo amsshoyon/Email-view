@@ -12,7 +12,7 @@ const ServiceCard = ({onClick, id, name}: ServiceCardProp) => {
 		<React.Fragment>
 			<Card>
 				<CardActionArea onClick={()=>onClick(id)}>
-					<CardContent>
+					<CardContent className='h-48 flex items-center justify-center'>
 						<Typography variant="h5">
 							{name}
 						</Typography>

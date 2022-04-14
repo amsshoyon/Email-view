@@ -1,9 +1,8 @@
 import ServiceCard from '@components/ServiceCard/ServiceCard'
 import ServiceDrawer from '@components/ServiceDrawer/ServiceDrawer'
-import {Grid } from '@mui/material'
+import {Box, Button, Card, Grid, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { Service } from 'types/types'
-import { Notify } from '@utils/common'
+import { ServiceGroup } from 'types/types'
 
 const data = [
 	{
@@ -35,24 +34,30 @@ const data = [
 
 const Services = () => {
 	const [serviceDrawer, setServiceDrawer] = useState<boolean>(false);
-	const [selectedServices, setSelectedServices] = useState<Service[]>([]);
+	const [selectedService, setSelectedService] = useState<ServiceGroup | null>(null);
 	
 	const toggleDrawer = (id: any)=> {
 		let service = data.find(item => item.id === id);
-		setSelectedServices(service?.services ? service.services : [])
+		setSelectedService(service ? service : null)
 		setServiceDrawer(true);
 	}
 
 	return (
 		<React.Fragment>
 			<Grid container spacing={2}>
+				<Grid item xs={12}>
+					<Card className='flex justify-between items-center border px-4 py-2 bg-gray-300'>
+						<Typography variant='h5'>Service Groups</Typography>
+						<Button variant='outlined'>Add New Group</Button>
+					</Card>
+				</Grid>
 				{data.map((service, i)=> 
 					<Grid item xs={4} key={i}>
 						<ServiceCard name={service.name} id={service.id} onClick={toggleDrawer}/>
 					</Grid>
 				)}
 			</Grid>
-			<ServiceDrawer show={serviceDrawer} onClose={()=>setServiceDrawer(false)} services={selectedServices}/>
+			<ServiceDrawer show={serviceDrawer} onClose={()=>setServiceDrawer(false)} service={selectedService}/>
 		</React.Fragment>
 	)
 }
