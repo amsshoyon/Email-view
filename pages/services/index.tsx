@@ -39,11 +39,8 @@ const Services = () => {
 	
 	const toggleDrawer = (id: any)=> {
 		let service = data.find(item => item.id === id);
-		if(service?.services) {
-			setSelectedServices(service.services)
-			setServiceDrawer(true);
-		}
-		else Notify('No services added', 'warning')
+		setSelectedServices(service?.services ? service.services : [])
+		setServiceDrawer(true);
 	}
 
 	return (
