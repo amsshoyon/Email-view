@@ -11,9 +11,7 @@ const SingleService = () => {
 	}
 
 	const removeAttachmentByIndex = ( index: number ): void => {
-		console.log('index:', index)
-		let newArr = [...attachments];
-		console.log('newArr:', newArr)
+		setAttachments(attachments.filter(item=> item !== index))
 	}
 
 	return (
@@ -43,8 +41,8 @@ const SingleService = () => {
 
 			<Divider className='mb-6' />
 			{attachments.map((key, i) => <AttachmentForm 
-				count={i + 1} 
-				key={i} 
+				count={key + 1} 
+				key={key} 
 				onDelete={removeAttachmentByIndex}
 			/> )}
 

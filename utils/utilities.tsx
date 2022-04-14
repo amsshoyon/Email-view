@@ -120,6 +120,7 @@ export const MultiValueInput = (props: MultiValueInputProps) => {
                 onKeyDown={handleKeyUp}
                 variant="outlined"
                 fullWidth
+                type="email"
             />
         </React.Fragment>
     )

@@ -15,7 +15,7 @@ const AttachmentForm = ({ count, className, onDelete }: AttachmentFormProps) => 
         <React.Fragment>
             <Box className={className}>
                 <Box className="flex items-center justify-between mb-4">
-                    <Typography variant='h5'>Attachment {count}</Typography>
+                    <Typography variant='h5'>Attachment</Typography>
                     <IconButton color='error' onClick={()=>onDelete(count - 1)}>
                         <DeleteIcon />
                     </IconButton>
