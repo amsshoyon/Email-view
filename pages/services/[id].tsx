@@ -43,7 +43,7 @@ const SingleService = () => {
 
 			<Divider className='mb-6' />
 			{attachments.map((key, i) => <AttachmentForm 
-				count={key + 1} 
+				count={i + 1} 
 				key={key} 
 				onDelete={removeAttachmentByIndex}
 			/> )}
