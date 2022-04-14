@@ -1,41 +1,24 @@
-import { Card, CardActionArea, CardContent, Drawer, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
-import MailIcon from '@mui/icons-material/Mail';
-import React, { useState } from 'react'
-import Link from 'next/link';
+import { Card, CardActionArea, CardContent, Typography } from '@mui/material'
+import React from 'react'
 
-const ServiceCard = () => {
-	const [serviceDrawer, setServiceDrawer] = useState(false);
+interface ServiceCardProp {
+	onClick: Function,
+	id: string | number,
+	name: string
+}
 
+const ServiceCard = ({onClick, id, name}: ServiceCardProp) => {
 	return (
 		<React.Fragment>
 			<Card>
-				<CardActionArea onClick={() => setServiceDrawer(true)}>
+				<CardActionArea onClick={()=>onClick(id)}>
 					<CardContent>
 						<Typography variant="h5">
-							Ecom & Webstore
+							{name}
 						</Typography>
 					</CardContent>
 				</CardActionArea>
 			</Card>
-
-			<Drawer
-				anchor={'right'}
-				open={serviceDrawer}
-				onClose={() => setServiceDrawer(false)}
-			>
-				<List className='w-96 pt-24'>
-					{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, i) => (
-						<Link href="/services/32" passHref key={i}>
-							<ListItem button component="a">
-								<ListItemIcon>
-									<MailIcon />
-								</ListItemIcon>
-								<ListItemText primary={text} />
-							</ListItem>
-						</Link>
-					))}
-				</List>
-			</Drawer>
 		</React.Fragment>
 	)
 }
