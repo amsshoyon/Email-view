@@ -4,7 +4,7 @@ import { Notify } from '@utils/common'
 import { FileInput, FormGroup, MultiValueInput } from '@utils/FormElements'
 import React, { useState } from 'react'
 
-const SingleService = () => {
+const SingleTemplate = () => {
 	const [attachments, setAttachments] = useState<number[]>([])
 	
 	const addAttachment = () => {
@@ -54,4 +54,4 @@ const SingleService = () => {
 	)
 }
 
-export default SingleService
+export default SingleTemplate

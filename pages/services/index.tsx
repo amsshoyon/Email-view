@@ -1,6 +1,7 @@
+import AddServiceModal from '@components/AddServiceModal/AddServiceModal'
 import ServiceCard from '@components/ServiceCard/ServiceCard'
-import ServiceDrawer from '@components/ServiceDrawer/ServiceDrawer'
-import {Box, Button, Card, Grid, Typography } from '@mui/material'
+import TemplateListDrawer from '@components/TemplateListDrawer/TemplateListDrawer'
+import { Button, Card, Grid, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { ServiceGroup } from 'types/types'
 
@@ -33,13 +34,14 @@ const data = [
 ]
 
 const Services = () => {
-	const [serviceDrawer, setServiceDrawer] = useState<boolean>(false);
+	const [templateListDrawer, setTemplateListDrawer] = useState<boolean>(false);
+	const [addServiceModal, setAddServiceModal] = React.useState(false);
 	const [selectedService, setSelectedService] = useState<ServiceGroup | null>(null);
 	
 	const toggleDrawer = (id: any)=> {
 		let service = data.find(item => item.id === id);
 		setSelectedService(service ? service : null)
-		setServiceDrawer(true);
+		setTemplateListDrawer(true);
 	}
 
 	return (
@@ -48,7 +50,7 @@ const Services = () => {
 				<Grid item xs={12}>
 					<Card className='flex justify-between items-center border px-4 py-2 bg-gray-300'>
 						<Typography variant='h5'>Service Groups</Typography>
-						<Button variant='outlined'>Add New Group</Button>
+						<Button variant='contained' color='info' onClick={()=>setAddServiceModal(true)}>Add New Group</Button>
 					</Card>
 				</Grid>
 				{data.map((service, i)=> 
@@ -57,7 +59,8 @@ const Services = () => {
 					</Grid>
 				)}
 			</Grid>
-			<ServiceDrawer show={serviceDrawer} onClose={()=>setServiceDrawer(false)} service={selectedService}/>
+			<TemplateListDrawer show={templateListDrawer} onClose={()=>setTemplateListDrawer(false)} service={selectedService}/>
+			<AddServiceModal open={addServiceModal} toggle={()=>setAddServiceModal(false)}/>
 		</React.Fragment>
 	)
 }

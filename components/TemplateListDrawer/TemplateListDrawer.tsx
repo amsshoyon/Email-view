@@ -5,13 +5,13 @@ import Link from 'next/link'
 import React from 'react'
 import { ServiceGroup } from 'types/types';
 
-interface ServiceDrawerProps {
+interface TemplateListDrawerProps {
     show: boolean,
     onClose: Function,
     service: ServiceGroup | null
 }
 
-const ServiceDrawer = ({show, onClose, service}: ServiceDrawerProps) => {
+const TemplateListDrawer = ({show, onClose, service}: TemplateListDrawerProps) => {
     return (
         <Drawer anchor={'right'} open={show} onClose={()=>onClose()} >
             <Box component="div" className='flex flex-col justify-between h-full'>
@@ -46,4 +46,4 @@ const ServiceDrawer = ({show, onClose, service}: ServiceDrawerProps) => {
     )
 }
 
-export default ServiceDrawer
+export default TemplateListDrawer

@@ -8,7 +8,7 @@ import { EmailRegex } from "./validator"
 // -----------------------------------------------------------------------------------------------
 interface FormGroupProps {
     children: React.ReactNode,
-    label: string
+    label?: string
 }
 
 export const FormGroup = ({ children, label }: FormGroupProps) => {
