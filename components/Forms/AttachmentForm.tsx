@@ -5,18 +5,19 @@ import React from 'react'
 import { FileInput, FormGroup } from '@utils/FormElements'
 
 interface AttachmentFormProps {
-    count: number,
+    id: number,
     className?: string,
-    onDelete: Function
+    onDelete: Function,
+    index: number
 }
 
-const AttachmentForm = ({ count, className, onDelete }: AttachmentFormProps) => {
+const AttachmentForm = ({ index, id, className, onDelete }: AttachmentFormProps) => {
     return (
         <React.Fragment>
             <Box className={className}>
                 <Box className="flex items-center justify-between mb-4">
-                    <Typography variant='h5'>Attachment {count}</Typography>
-                    <IconButton color='error' onClick={()=>onDelete(count - 1)}>
+                    <Typography variant='h5'>Attachment {index + 1 }</Typography>
+                    <IconButton color='error' onClick={()=>onDelete(id)}>
                         <DeleteIcon />
                     </IconButton>
                 </Box>

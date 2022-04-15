@@ -12,7 +12,8 @@ const SingleService = () => {
 	}
 
 	const removeAttachmentByIndex = ( index: number ): void => {
-		if(confirm("Delete field?")) setAttachments(attachments.filter(item=> item !== index));
+		let filtered = attachments.filter(item=> item !== index);
+		if(confirm("Delete field?")) setAttachments(filtered);
 		Notify('Field deleted', 'success');
 	}
 
@@ -42,11 +43,8 @@ const SingleService = () => {
 			</Grid>
 
 			<Divider className='mb-6' />
-			{attachments.map((key, i) => <AttachmentForm 
-				count={i + 1} 
-				key={key} 
-				onDelete={removeAttachmentByIndex}
-			/> )}
+
+			{attachments.map((key, i) => <AttachmentForm id={key} index={i} key={key} onDelete={removeAttachmentByIndex} /> )}
 
 			<div className="flex">
 				<Button variant="contained" color='info' className='mr-3'>Save</Button>
