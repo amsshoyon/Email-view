@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import { FormikTextField } from '@utils/FormElements'
 import { CustomLink, Notify } from '@utils/common'
 import axios from 'axios'
+import { setCookie } from '@utils/clientSideCookies'
 
 interface FormFields {
     username: string,
@@ -33,7 +34,7 @@ const LoginContent = () => {
     const handleLogin = async (values: FormFields, setSubmitting: any) => {
         await axios.post('/api/auth/login', values)
             .then(res => {
-                console.log('res:', res)
+                setCookie({name: "accessToken", token: JSON.stringify(res.data.accessToken)});
                 setSubmitting(false)
             })
             .catch(error => {

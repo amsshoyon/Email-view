@@ -7,6 +7,7 @@ import { FormikTextField } from '@utils/FormElements'
 import { CustomLink, Notify } from '@utils/common'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { setCookie } from '@utils/clientSideCookies'
 
 interface FormFields {
     username: string,
@@ -37,12 +38,13 @@ const RegisterContent = () => {
     }
 
     const handleRegistration = async (values: FormFields, setSubmitting: any) => {
-        const {username, password} = values;
-        await axios.post('/api/auth/signup', {username, password})
+        const { username, password } = values;
+        await axios.post('/api/auth/signup', { username, password })
             .then(res => {
                 setSubmitting(false)
-                if(res?.data?.statusCode === 409) Notify(res.data.message, 'error');
+                if (res?.data?.statusCode === 409) Notify(res.data.message, 'error');
                 else {
+                    setCookie({name: "accessToken", token: JSON.stringify(res.data.accessToken)});
                     Notify('Registration successfull', 'success');
                     router.push('/auth/login')
                 }
