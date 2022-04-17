@@ -72,29 +72,29 @@ export const MultiValueInput = (props: MultiValueInputProps) => {
         setValues(arr)
     }
 
-    const StackLabel = ()=> {
+    const StackLabel = () => {
         return (
             <React.Fragment>
                 {values.length ?
-                <Box className="mb-2 flex" sx={{flexWrap: 'wrap'}}>
-                    {values.map((item, i) => (
-                        <Chip variant="outlined" 
-                            size="small" 
-                            onDelete={() => handleDelete(item, i)} 
-                            label={item} key={i} 
-                            sx={{margin: '0 4px 4px 0'}}
-                        />
-                    ))}
-                </Box> 
-                : <></>
-            }
+                    <Box className="mb-2 flex" sx={{ flexWrap: 'wrap' }}>
+                        {values.map((item, i) => (
+                            <Chip variant="outlined"
+                                size="small"
+                                onDelete={() => handleDelete(item, i)}
+                                label={item} key={i}
+                                sx={{ margin: '0 4px 4px 0' }}
+                            />
+                        ))}
+                    </Box>
+                    : <></>
+                }
             </React.Fragment>
         )
     }
 
     return (
         <React.Fragment>
-            
+
             {StackLabel()}
 
             <TextField value={currValue}
@@ -105,5 +105,37 @@ export const MultiValueInput = (props: MultiValueInputProps) => {
                 type="email"
             />
         </React.Fragment>
+    )
+}
+
+// -----------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------
+interface FormikTextFieldProps {
+    label?: string,
+    name: string,
+    value: string | number,
+    errors: any,
+    touched: any,
+    onBlur: Function,
+    onChange: Function 
+}
+
+export const FormikTextField = ({name, label, onChange, onBlur, value, errors, touched, ...rest}: FormikTextFieldProps) => {
+    return (
+        <TextField label={label}
+            name={name}
+            variant="outlined"
+            className='mb-4'
+            value={value}
+            fullWidth
+            InputLabelProps={{
+                shrink: true,
+            }}
+            onChange={()=>onChange}
+            onBlur={()=>onBlur}
+            error={errors[name] && touched[name] ? true : false}
+            helperText={errors[name] && touched[name] ? errors[name] : ''}
+            {...rest}
+        />
     )
 }

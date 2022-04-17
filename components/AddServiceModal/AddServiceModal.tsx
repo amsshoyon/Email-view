@@ -3,6 +3,7 @@ import { CustomModal } from '@utils/common';
 import React from 'react'
 import { Formik, Form, FormikProps } from 'formik'
 import * as Yup from 'yup'
+import { FormikTextField } from '@utils/FormElements';
 
 interface AddServiceModalProps {
     open: boolean,
@@ -32,17 +33,12 @@ const AddServiceModal = ({ open, toggle }: AddServiceModalProps) => {
                     const { values, touched, errors, handleBlur, handleChange, isSubmitting } = props
                     return (
                         <Form>
-                            <TextField label="Service name"
+                            <FormikTextField 
+                                label="Service name"
                                 name='name'
-                                variant="outlined"
-                                className='mb-4'
                                 value={values.name}
-                                fullWidth
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                error={errors.name && touched.name? true : false}
-                                helperText={errors.name && touched.name ? errors.name : ''}
+                                errors={errors}
+                                touched={touched}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
