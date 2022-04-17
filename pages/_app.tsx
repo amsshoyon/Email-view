@@ -1,14 +1,23 @@
-import type { AppProps } from 'next/app'
-import Layout from '@components/Layout/Layout'
-import { CssBaseline } from '@mui/material'
-import { ThemeProvider } from '@emotion/react'
-import { Theme } from 'helpers/theme'
 import Head from 'next/head'
+import React, { ReactElement } from 'react'
+import { AppProps } from 'next/app'
+import { ThemeProvider } from '@emotion/react'
+import { CssBaseline } from '@mui/material'
 import { ToastContainer } from 'material-react-toastify';
+import { Theme } from 'helpers/theme'
+import BasicLayout from '@components/Layout/Layout'
+import PageWithLayoutType from 'types/pageWithLayouts'
 import '../styles/globals.scss'
 import 'material-react-toastify/dist/ReactToastify.css';
 
-function MyApp({ Component, pageProps }: AppProps) {
+type AppLayoutProps = AppProps & {
+	Component: PageWithLayoutType
+	pageProps: any
+}
+
+function MyApp({ Component, pageProps }: AppLayoutProps) {
+	const Layout = Component.layout ? Component.layout : BasicLayout || ((children: ReactElement) => <>{children}</>)
+
 	return (
 		<ThemeProvider theme={Theme}>
 			<ToastContainer />
