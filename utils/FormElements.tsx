@@ -131,8 +131,8 @@ export const FormikTextField = ({name, label, onChange, onBlur, value, errors, t
             InputLabelProps={{
                 shrink: true,
             }}
-            onChange={()=>onChange}
-            onBlur={()=>onBlur}
+            onChange={onChange}
+            onBlur={onBlur}
             error={errors[name] && touched[name] ? true : false}
             helperText={errors[name] && touched[name] ? errors[name] : ''}
             {...rest}

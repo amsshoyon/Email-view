@@ -9,7 +9,8 @@ import { CustomLink } from '@utils/common'
 
 interface FormFields {
     username: string,
-    password: string
+    password: string,
+    passwordConfirmation: string
 }
 
 const FormSchema = Yup.object().shape({
@@ -21,20 +22,22 @@ const FormSchema = Yup.object().shape({
             /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
             "Password must have atleast at least 1 upper case letter, 1 lower case letter, 1 number or special character"
         )
-        .required('Please Enter your password')
+        .required('Please Enter your password'),
+    passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
 });
 
-const Login = () => {
+const SignUp = () => {
     const FormInitialValue = {
         username: '',
         password: '',
+        passwordConfirmation: ''
     }
 
     return (
         <Box className='mx-auto w-1/4 pt-24'>
             <Card>
                 <CardContent>
-                    <Typography variant='h6' className='mb-6'>Login</Typography>
+                    <Typography variant='h6' className='mb-6'>Register as user</Typography>
                     <Formik 
                         initialValues={FormInitialValue} 
                         validationSchema={FormSchema} 
@@ -62,18 +65,21 @@ const Login = () => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
+                                    <FormikTextField 
+                                        label="Confirm Password"
+                                        name='passwordConfirmation'
+                                        value={values.passwordConfirmation}
+                                        errors={errors}
+                                        touched={touched}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
                                     <Box className='flex justify-between items-center mb-2'>
-                                        <Button variant='contained' type='submit' disabled={isSubmitting}>Login</Button>
-                                        <CustomLink href='/auth/forgot-password'>
-                                            Forgot password ?
+                                        <Button variant='contained' type='submit' disabled={isSubmitting}>Signup</Button>
+                                        <CustomLink href='/auth/login'>
+                                            Login
                                         </CustomLink>
                                     </Box>
-                                    <Typography className='text-right'>
-                                        Create new account? &nbsp;
-                                        <CustomLink href='/auth/signup'>
-                                            Register
-                                        </CustomLink>
-                                    </Typography>
                                 </Form>
                             )
                         }}
@@ -83,5 +89,5 @@ const Login = () => {
         </Box>
     )
 }
-Login.layout = AuthLayout
-export default Login
+SignUp.layout = AuthLayout
+export default SignUp
