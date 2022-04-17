@@ -10,3 +10,5 @@ export type PageWithLayoutType = PageWithMainLayoutType | PageWithAdminLayoutTyp
 
 export type LayoutProps = ({ children }: { children: ReactElement }) => ReactElement
 export default PageWithLayoutType
+
+//NextComponentType<NextPageContext, any, {}>

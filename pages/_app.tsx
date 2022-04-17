@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { AppProps } from 'next/app'
 import { ThemeProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
@@ -9,6 +9,9 @@ import BasicLayout from '@components/Layout/Layout'
 import PageWithLayoutType from 'types/pageWithLayouts'
 import '../styles/globals.scss'
 import 'material-react-toastify/dist/ReactToastify.css';
+import { observer } from 'mobx-react'
+import AuthStore from '@stores/AuthStore'
+import { useRouter } from 'next/router'
 
 type AppLayoutProps = AppProps & {
 	Component: PageWithLayoutType
@@ -17,6 +20,12 @@ type AppLayoutProps = AppProps & {
 
 function MyApp({ Component, pageProps }: AppLayoutProps) {
 	const Layout = Component.layout ? Component.layout : BasicLayout || ((children: ReactElement) => <>{children}</>)
+	const router = useRouter();
+
+	useEffect(()=> {
+		if (!AuthStore.isLoggedIn) router.push('/auth/login')
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [AuthStore.isLoggedIn])
 
 	return (
 		<ThemeProvider theme={Theme}>
@@ -34,4 +43,4 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
 	)
 }
 
-export default MyApp
+export default observer(MyApp)

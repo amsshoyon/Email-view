@@ -1,12 +1,14 @@
 import { Button, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Formik, Form, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import { FormikTextField } from '@utils/FormElements'
 import { CustomLink, Notify } from '@utils/common'
 import axios from 'axios'
 import { setCookie } from '@utils/clientSideCookies'
+import AuthStore from '@stores/AuthStore'
+import { useRouter } from 'next/router'
 
 interface FormFields {
     username: string,
@@ -26,16 +28,24 @@ const FormSchema = Yup.object().shape({
 });
 
 const LoginContent = () => {
+    const router = useRouter();
     const FormInitialValue = {
         username: '',
         password: '',
     }
 
+    useEffect(()=>{
+        if(AuthStore.isLoggedIn) router.push('/');
+    },[router])
+
     const handleLogin = async (values: FormFields, setSubmitting: any) => {
         await axios.post('/api/auth/login', values)
             .then(res => {
                 setCookie({name: "accessToken", token: JSON.stringify(res.data.accessToken)});
-                setSubmitting(false)
+                setSubmitting(false);
+                AuthStore.setIsLoggedIn(true);
+                AuthStore.setUser(res.data.user);
+                router.push('/');
             })
             .catch(error => {
                 Notify('Something went wrong!', 'error');

@@ -1,3 +1,5 @@
+import { getCookie as cookieGet, removeCookies, setCookies } from 'cookies-next';
+
 interface TokenExpiry {
     isValid: boolean,
     expiryTime: number
@@ -35,24 +37,17 @@ export interface SetCookie {
 export const setCookie = ({ name, value, token, time }: SetCookie): void => {
     const cookieValue = token ? token : value;
     let maxAge = token ? isTokenExpired(token).expiryTime : time;
-    document.cookie = name + "=" + (cookieValue || "") + maxAge + "; path=/";
+    setCookies(name, cookieValue, { maxAge: maxAge });
 }
 
 // ======================================================================
 // ======================================================================
 export const  getCookie = (name: string) => {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
+    return cookieGet(name)
 }
 
 // ======================================================================
 // ======================================================================
-export const eraseCookie = (name: string) => {
-    document.cookie = name+'=; Max-Age=-99999999;';
+export const deleteCookie = (name: string) => {
+    removeCookies(name)
 }
