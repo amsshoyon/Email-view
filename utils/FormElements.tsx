@@ -1,7 +1,7 @@
 import { Button, Chip, Stack, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import Link from "next/link"
-import React, { SetStateAction, useState } from "react"
+import React, { ChangeEventHandler, SetStateAction, useState } from "react"
 import { EmailRegex } from "./validator"
 
 // -----------------------------------------------------------------------------------------------
@@ -111,18 +111,21 @@ export const MultiValueInput = (props: MultiValueInputProps) => {
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 interface FormikTextFieldProps {
+    type?: string,
     label?: string,
     name: string,
     value: string | number,
     errors: any,
     touched: any,
-    onBlur: Function,
-    onChange: Function 
+    onBlur: ChangeEventHandler,
+    onChange: ChangeEventHandler 
 }
 
-export const FormikTextField = ({name, label, onChange, onBlur, value, errors, touched, ...rest}: FormikTextFieldProps) => {
+export const FormikTextField = ({name, type, label, onChange, onBlur, value, errors, touched, ...rest}: FormikTextFieldProps) => {
     return (
-        <TextField label={label}
+        <TextField 
+            type={type ? type : 'text'}
+            label={label}
             name={name}
             variant="outlined"
             className='mb-4'
