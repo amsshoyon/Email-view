@@ -8,6 +8,7 @@ import { CustomLink, Notify } from '@utils/common'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { setCookie } from '@utils/clientSideCookies'
+import { signUp } from 'requests/auth'
 
 interface FormFields {
     username: string,
@@ -39,22 +40,20 @@ const RegisterContent = () => {
 
     const handleRegistration = async (values: FormFields, setSubmitting: any) => {
         const { username, password } = values;
-        await axios.post('/api/auth/signup', { username, password })
-            .then(res => {
-                setSubmitting(false)
-                if (res?.data?.statusCode === 409) Notify(res.data.message, 'error');
-                else {
-                    setCookie({name: "accessToken", token: JSON.stringify(res.data.accessToken)});
-                    Notify('Registration successfull', 'success');
-                    router.push('/auth/login')
-                }
-            })
-            .catch(error => {
-                Notify('Something went wrong!', 'error');
-                console.log(error);
-            });
+        let res = await signUp(values);
+        if(res){
+            console.log('res:', res)
+            // setSubmitting(false)
+            // if (res?.statusCode === 409) Notify(res.message, 'error');
+            // else {
+            //     setCookie({name: "accessToken", token: JSON.stringify(res.accessToken)});
+            //     Notify('Registration successfull', 'success');
+            //     router.push('/auth/login')
+            // }
+        }else {
+            Notify('Something went wrong!', 'error');
+        }
     }
-
 
     return (
         <Formik

@@ -9,6 +9,7 @@ import axios from 'axios'
 import { setCookie } from '@utils/clientSideCookies'
 import AuthStore from '@stores/AuthStore'
 import { useRouter } from 'next/router'
+import { login } from 'requests/auth'
 
 interface FormFields {
     username: string,
@@ -39,18 +40,16 @@ const LoginContent = () => {
     },[router])
 
     const handleLogin = async (values: FormFields, setSubmitting: any) => {
-        await axios.post('/api/auth/login', values)
-            .then(res => {
-                setCookie({name: "accessToken", token: JSON.stringify(res.data.accessToken)});
-                setSubmitting(false);
-                AuthStore.setIsLoggedIn(true);
-                AuthStore.setUser(res.data.user);
-                router.push('/');
-            })
-            .catch(error => {
-                Notify('Something went wrong!', 'error');
-                console.log(error);
-            });
+        let res = await login(values);
+        if (res?.statusCode === 201) {
+            setCookie({name: "accessToken", token: JSON.stringify(res.data.accessToken)});
+            AuthStore.setIsLoggedIn(true);
+            AuthStore.setUser(res.data.user);
+            router.push('/');
+        } else {
+            Notify(res?.message, 'error');
+        }
+        setSubmitting(false);
     }
 
     return (

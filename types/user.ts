@@ -4,6 +4,10 @@ export interface User {
 }
 
 export interface AuthResponse {
-    accessToken: string;
-    user: User;
+    statusCode: number;
+    message: string;
+    data: {
+        accessToken: string;
+        user: User;
+    };
 }

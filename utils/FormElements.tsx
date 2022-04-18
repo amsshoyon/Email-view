@@ -1,6 +1,6 @@
-import { Button, Chip, Stack, TextField, Typography } from "@mui/material"
+import { Visibility, VisibilityOff } from "@mui/icons-material"
+import { Chip, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
-import Link from "next/link"
 import React, { ChangeEventHandler, SetStateAction, useState } from "react"
 import { EmailRegex } from "./validator"
 
@@ -118,12 +118,15 @@ interface FormikTextFieldProps {
     errors: any,
     touched: any,
     onBlur: ChangeEventHandler,
-    onChange: ChangeEventHandler 
+    onChange: ChangeEventHandler
 }
 
-export const FormikTextField = ({name, type, label, onChange, onBlur, value, errors, touched, ...rest}: FormikTextFieldProps) => {
+export const FormikTextField = ({ name, type, label, onChange, onBlur, value, errors, touched, ...rest }: FormikTextFieldProps) => {
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
     return (
-        <TextField 
+        <TextField
             type={type ? type : 'text'}
             label={label}
             name={name}
@@ -139,6 +142,24 @@ export const FormikTextField = ({name, type, label, onChange, onBlur, value, err
             error={errors[name] && touched[name] ? true : false}
             helperText={errors[name] && touched[name] ? errors[name] : ''}
             {...rest}
+            inputProps={{
+                autocomplete: 'new-password',
+                form: { autocomplete: 'off'},
+                endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                )
+            }}
         />
     )
 }
+
+// -----------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------

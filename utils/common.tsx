@@ -21,8 +21,9 @@ export const CustomLink = ({ href, children, className, button }: CustomLinkProp
     )
 }
 
-export const Notify = (message: string, type:TypeOptions = "default", time = 8000, position:ToastPosition = "top-right") => {
-    toast( message, {
+export const Notify = (message: string | undefined, type:TypeOptions = "default", time = 8000, position:ToastPosition = "top-right") => {
+    let msg = message ? message : "Something went wrong!";
+    toast( msg, {
         position: position,
         autoClose: time,
         type: type
