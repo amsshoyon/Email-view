@@ -7,16 +7,16 @@ import Sidebar from './Sidebar'
 
 interface LayoutProps {
     children: React.ReactNode;
+    show: boolean;
 }
 
-const BasicLayout = ({ children }: LayoutProps) => {
-
+const Layout = ({ children, show }: LayoutProps) => {
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex' }} >
             <CssBaseline />
             <Header />
             {AuthStore.isLoggedIn ? <Sidebar /> : <></>}
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }} className={show ? 'visible' : 'invisible'}>
                 <Toolbar />
                 {children}
             </Box>
@@ -24,4 +24,4 @@ const BasicLayout = ({ children }: LayoutProps) => {
     )
 }
 
-export default observer(BasicLayout)
+export default observer(Layout)

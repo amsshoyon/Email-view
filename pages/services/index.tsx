@@ -65,4 +65,5 @@ const Services = () => {
 	)
 }
 
+Services.protected = true
 export default Services

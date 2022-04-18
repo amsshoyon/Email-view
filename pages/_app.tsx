@@ -1,32 +1,40 @@
+import { NextPage } from 'next'
 import Head from 'next/head'
-import React, { ReactElement, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppProps } from 'next/app'
 import { ThemeProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
 import { ToastContainer } from 'material-react-toastify';
 import { Theme } from 'helpers/theme'
-import BasicLayout from '@components/Layout/Layout'
-import PageWithLayoutType from 'types/pageWithLayouts'
-import '../styles/globals.scss'
-import 'material-react-toastify/dist/ReactToastify.css';
 import { observer } from 'mobx-react'
 import AuthStore from '@stores/AuthStore'
 import { useRouter } from 'next/router'
+import Layout from '@components/Layout/Layout'
+import '../styles/globals.scss'
+import 'material-react-toastify/dist/ReactToastify.css';
 
-type AppLayoutProps = AppProps & {
-	Component: PageWithLayoutType
-	pageProps: any
+export type NextApplicationPage<P = any, IP = P> = NextPage<P, IP> & {
+	protected?: boolean
 }
 
-function MyApp({ Component, pageProps }: AppLayoutProps) {
-	const Layout = Component.layout ? Component.layout : BasicLayout || ((children: ReactElement) => <>{children}</>)
+function MyApp(props: AppProps) {
+	const { Component, pageProps }: { Component: NextApplicationPage; pageProps: any } = props;
 	const router = useRouter();
-
-	useEffect(()=> {
-		if (!AuthStore.isLoggedIn) router.push('/auth/login')
+	const [showUi, setShowUi] = useState(Component.protected ? false : true);
+	
+	useEffect(() => {
+		if (Component.protected && AuthStore.isLoggedIn) setShowUi(true);
+		else if(Component.protected && !AuthStore.isLoggedIn) {
+			router.push('/auth/login');
+			setTimeout(() => setShowUi(true), 1000);
+		}
+	}, [Component.protected, router])
+	
+	useEffect(() => {
+		if(AuthStore.redirectToPath) router.push('/auth/login');
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [AuthStore.isLoggedIn])
-
+	}, [AuthStore.redirectToPath])
+	
 	return (
 		<ThemeProvider theme={Theme}>
 			<ToastContainer />
@@ -36,7 +44,7 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<CssBaseline />
-			<Layout>
+			<Layout show={showUi}>
 				<Component {...pageProps} />
 			</Layout>
 		</ThemeProvider>

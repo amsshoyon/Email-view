@@ -1,4 +1,3 @@
-import AuthLayout from '@components/Layout/AuthLayout'
 import { Card, CardContent, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
@@ -17,5 +16,4 @@ const SignUp = () => {
         </Box>
     )
 }
-SignUp.layout = AuthLayout
 export default SignUp
