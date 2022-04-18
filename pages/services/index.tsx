@@ -2,35 +2,21 @@ import AddServiceModal from '@components/AddServiceModal/AddServiceModal'
 import ServiceCard from '@components/ServiceCard/ServiceCard'
 import TemplateListDrawer from '@components/TemplateListDrawer/TemplateListDrawer'
 import { Button, Card, Grid, Typography } from '@mui/material'
-import { Notify } from '@utils/common'
-import React, { useEffect, useState } from 'react'
-import { getAllService } from 'requests/services'
+import ServiceStore from '@stores/ServiceStore'
+import { observer } from 'mobx-react'
+import React, { useState } from 'react'
 import { Service } from 'types/types'
 
 const Services = () => {
-	const [services, setServices] = useState<Service[]>([]);
 	const [templateListDrawer, setTemplateListDrawer] = useState<boolean>(false);
 	const [addServiceModal, setAddServiceModal] = React.useState(false);
 	const [selectedService, setSelectedService] = useState<Service | null>(null);
 	
 	const toggleDrawer = (id: any)=> {
-		let service = services.find(item => item.id === id);
+		let service = ServiceStore.services.find(item => item.id === id);
 		setSelectedService(service ? service : null)
 		setTemplateListDrawer(true);
 	}
-
-	const getServices = async ()=> {
-		let res = await getAllService();
-		if (res?.statusCode === 200) {
-			setServices(res.data);
-        } else {
-            Notify(res?.message, 'error');
-        }
-	}
-
-	useEffect(() => {
-		getServices();
-	},[])
 
 	return (
 		<React.Fragment>
@@ -41,7 +27,7 @@ const Services = () => {
 						<Button variant='contained' color='info' onClick={()=>setAddServiceModal(true)}>Add New Group</Button>
 					</Card>
 				</Grid>
-				{services.map((service, i)=> 
+				{ServiceStore.services?.map((service, i)=> 
 					<Grid item xs={4} key={i}>
 						<ServiceCard name={service.title} id={service.id} onClick={toggleDrawer}/>
 					</Grid>
@@ -54,4 +40,4 @@ const Services = () => {
 }
 
 Services.protected = true
-export default Services
+export default observer(Services)

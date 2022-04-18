@@ -6,9 +6,9 @@ import React from 'react'
 import { Service } from 'types/types';
 
 interface TemplateListDrawerProps {
-    show: boolean,
-    onClose: Function,
-    service: Service
+    show: boolean;
+    onClose: Function;
+    service: Service | null;
 }
 
 const TemplateListDrawer = ({show, onClose, service}: TemplateListDrawerProps) => {
