@@ -31,3 +31,14 @@ export const login = async (values: AuthProps): Promise<AuthResponse | null> => 
         return null
     }
 }
+
+export const getUser = async (): Promise<AuthResponse | null> => {
+    try {
+        let result = await axios.get(`${baseUrl}/user`);
+        if(result.data) return result.data;
+        return null
+    } catch (error) {
+        console.log('error:', error)
+        return null
+    }
+}

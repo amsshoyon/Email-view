@@ -9,6 +9,8 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { setCookie } from '@utils/clientSideCookies'
 import { signUp } from 'requests/auth'
+import AuthStore from '@stores/AuthStore'
+import { observer } from 'mobx-react'
 
 interface FormFields {
     username: string,
@@ -40,19 +42,16 @@ const RegisterContent = () => {
 
     const handleRegistration = async (values: FormFields, setSubmitting: any) => {
         const { username, password } = values;
-        let res = await signUp(values);
-        if(res){
-            console.log('res:', res)
-            // setSubmitting(false)
-            // if (res?.statusCode === 409) Notify(res.message, 'error');
-            // else {
-            //     setCookie({name: "accessToken", token: JSON.stringify(res.accessToken)});
-            //     Notify('Registration successfull', 'success');
-            //     router.push('/auth/login')
-            // }
-        }else {
-            Notify('Something went wrong!', 'error');
+        let res = await signUp({ username, password });
+        if (res?.statusCode === 201) {
+            setCookie({name: "accessToken", token: JSON.stringify(res.data.accessToken)});
+            AuthStore.setIsLoggedIn(true);
+            AuthStore.setUser(res.data.user);
+            router.push('/');
+        } else {
+            Notify(res?.message, 'error');
         }
+        setSubmitting(false);
     }
 
     return (
@@ -78,6 +77,7 @@ const RegisterContent = () => {
                         />
                         <FormikTextField
                             label="Password"
+                            type='password'
                             name='password'
                             value={values.password}
                             errors={errors}
@@ -87,6 +87,7 @@ const RegisterContent = () => {
                         />
                         <FormikTextField
                             label="Confirm Password"
+                            type='password'
                             name='passwordConfirmation'
                             value={values.passwordConfirmation}
                             errors={errors}
@@ -107,4 +108,4 @@ const RegisterContent = () => {
     )
 }
 
-export default RegisterContent
+export default observer(RegisterContent)

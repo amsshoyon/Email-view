@@ -123,11 +123,9 @@ interface FormikTextFieldProps {
 
 export const FormikTextField = ({ name, type, label, onChange, onBlur, value, errors, touched, ...rest }: FormikTextFieldProps) => {
     const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword(!showPassword);
-    const handleMouseDownPassword = () => setShowPassword(!showPassword);
     return (
         <TextField
-            type={type ? type : 'text'}
+            type={type === 'password' ? (showPassword ? 'text' : 'password') : 'text'}
             label={label}
             name={name}
             variant="outlined"
@@ -143,19 +141,23 @@ export const FormikTextField = ({ name, type, label, onChange, onBlur, value, er
             helperText={errors[name] && touched[name] ? errors[name] : ''}
             {...rest}
             inputProps={{
-                autocomplete: 'new-password',
-                form: { autocomplete: 'off'},
-                endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                )
+                autoComplete: 'new-password',
+                form: { autoComplete: 'off' },
+            }}
+            InputProps={{
+                endAdornment:
+                    type === "password" ? (
+                        <InputAdornment
+                            position="start"
+                            classes={{ positionStart: "0px" }}
+                        >
+                            <IconButton
+                                onClick={()=>setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                    ) : null,
             }}
         />
     )

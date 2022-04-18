@@ -7,8 +7,6 @@ import React from 'react'
 const Dropdown = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
-    console.log(AuthStore.user);
-    
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
     };

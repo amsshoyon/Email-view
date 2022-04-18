@@ -3,6 +3,8 @@ import { deleteCookie, getCookie } from '@utils/clientSideCookies';
 import axios from 'axios';
 import { makeAutoObservable } from 'mobx'
 import { User } from 'types/user'
+import { getUser } from 'requests/auth';
+import { Notify } from '@utils/common';
 
 class Auth {
 	isLoggedIn: boolean = false
@@ -13,18 +15,17 @@ class Auth {
 		this.getUserByToken();
 	}
 
-	getUserByToken = async ()=> {
+	getUserByToken = async () => {
 		const token = getCookie('accessToken');
 		if(token) {
-			await axios.get('/api/auth/user')
-				.then(res => {
-					console.log('res:', res)
-					this.setIsLoggedIn(true);
-					this.setUser(res.data.user);
-				})
-				.catch(error => {
-					console.log(error);
-				});
+			let res = await getUser();
+			if (res?.statusCode === 200) {
+				this.setIsLoggedIn(true);
+				console.log('res.data:', res.data)
+				this.setUser(res.data);
+			} else {
+				Notify(res?.message, 'error');
+			}
 		}
 	}
 
