@@ -33,6 +33,7 @@ class Auth {
 
 	setIsLoggedIn = (state: boolean) => {
 		this.isLoggedIn = state;
+		this.redirectToPath = ''
 	}
 
 	logout = ()=> {

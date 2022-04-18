@@ -16,14 +16,16 @@ const Header = () => {
     };
 
     const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     const dropdown = () => {
         return (
             <React.Fragment>
-                <Button variant="contained" onClick={handleClick}>
+                <Button variant="contained" onClick={handleClick} aria-describedby={id}>
                     {AuthStore.user ? AuthStore.user.username : 'Account'}
                 </Button>
                 <Popover
+                    id={id}
                     open={open}
                     anchorEl={anchorEl}
                     onClose={handleClose}
