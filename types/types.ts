@@ -1,10 +1,9 @@
-export interface Service {
-    name: string,
+export interface Template {
+    title: string,
     id: string | number
 }
 
-export interface ServiceGroup {
-    name: string,
-    id: string | number,
-    services: Service[]
+export interface Service {
+    title: string,
+    id: string | number
 }

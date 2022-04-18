@@ -3,12 +3,12 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 import { Box } from '@mui/system'
 import Link from 'next/link'
 import React from 'react'
-import { ServiceGroup } from 'types/types';
+import { Service } from 'types/types';
 
 interface TemplateListDrawerProps {
     show: boolean,
     onClose: Function,
-    service: ServiceGroup | null
+    service: Service
 }
 
 const TemplateListDrawer = ({show, onClose, service}: TemplateListDrawerProps) => {
@@ -25,16 +25,30 @@ const TemplateListDrawer = ({show, onClose, service}: TemplateListDrawerProps) =
                             }}
                         />
                     </Box> 
-                    {service?.services.map((service, i) => (
-                        <Link href={`services/${service.id}`} passHref key={i}>
+                        <Link href={`services/1`} passHref>
                             <ListItem button component="a">
                                 <ListItemIcon sx={{minWidth: '34px'}}>
                                     <ModeEditOutlineOutlinedIcon />
                                 </ListItemIcon>
-                                <ListItemText primary={service.name} />
+                                <ListItemText primary='Lorem ipsum' />
                             </ListItem>
                         </Link>
-                    ))}
+                        <Link href={`services/1`} passHref>
+                            <ListItem button component="a">
+                                <ListItemIcon sx={{minWidth: '34px'}}>
+                                    <ModeEditOutlineOutlinedIcon />
+                                </ListItemIcon>
+                                <ListItemText primary='Lorem ipsum' />
+                            </ListItem>
+                        </Link>
+                        <Link href={`services/1`} passHref>
+                            <ListItem button component="a">
+                                <ListItemIcon sx={{minWidth: '34px'}}>
+                                    <ModeEditOutlineOutlinedIcon />
+                                </ListItemIcon>
+                                <ListItemText primary='Lorem ipsum' />
+                            </ListItem>
+                        </Link>
                 </List>
                 <Box className='px-4'>
                     <Link href={`/services/add/${service?.id}`} passHref>
