@@ -25,7 +25,7 @@ const TemplateListDrawer = ({ show, onClose, service }: TemplateListDrawerProps)
     
     useEffect(() => {
         getService();
-    }, [service.id])
+    }, [service?.id])
     
     return (
         <Drawer anchor={'right'} open={show} onClose={() => {onClose()}} >
