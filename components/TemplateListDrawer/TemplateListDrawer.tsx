@@ -1,9 +1,10 @@
-import { Button, Drawer, List, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material'
+import { Button, Drawer, List, ListItem, ListItemIcon, ListItemText, TextField, Typography } from '@mui/material'
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import { Box } from '@mui/system'
 import Link from 'next/link'
-import React from 'react'
-import { Service } from 'types/types';
+import React, { useEffect, useState } from 'react'
+import { Service, Template } from 'types/types';
+import { getServiceById } from 'requests/services';
 
 interface TemplateListDrawerProps {
     show: boolean;
@@ -11,9 +12,23 @@ interface TemplateListDrawerProps {
     service: Service | null;
 }
 
-const TemplateListDrawer = ({show, onClose, service}: TemplateListDrawerProps) => {
+const TemplateListDrawer = ({ show, onClose, service }: TemplateListDrawerProps) => {
+    const [templates, setTemplates] = useState<Template[]>([]);
+
+    const getService = async () => {
+        let res = await getServiceById(service ? service.id : 0);
+        if(res.statusCode === 200){
+            setTemplates(res.data.templates);
+        }
+    }
+
+    
+    useEffect(() => {
+        getService();
+    }, [service.id])
+    
     return (
-        <Drawer anchor={'right'} open={show} onClose={()=>onClose()} >
+        <Drawer anchor={'right'} open={show} onClose={() => {onClose()}} >
             <Box component="div" className='flex flex-col justify-between h-full'>
                 <List className='w-96 pt-24'>
                     <Box className='px-4 mb-8'>
@@ -24,31 +39,20 @@ const TemplateListDrawer = ({show, onClose, service}: TemplateListDrawerProps) =
                                 shrink: true,
                             }}
                         />
-                    </Box> 
-                        <Link href={`services/1`} passHref>
-                            <ListItem button component="a">
-                                <ListItemIcon sx={{minWidth: '34px'}}>
-                                    <ModeEditOutlineOutlinedIcon />
-                                </ListItemIcon>
-                                <ListItemText primary='Lorem ipsum' />
-                            </ListItem>
-                        </Link>
-                        <Link href={`services/1`} passHref>
-                            <ListItem button component="a">
-                                <ListItemIcon sx={{minWidth: '34px'}}>
-                                    <ModeEditOutlineOutlinedIcon />
-                                </ListItemIcon>
-                                <ListItemText primary='Lorem ipsum' />
-                            </ListItem>
-                        </Link>
-                        <Link href={`services/1`} passHref>
-                            <ListItem button component="a">
-                                <ListItemIcon sx={{minWidth: '34px'}}>
-                                    <ModeEditOutlineOutlinedIcon />
-                                </ListItemIcon>
-                                <ListItemText primary='Lorem ipsum' />
-                            </ListItem>
-                        </Link>
+                    </Box>
+                    {(templates && templates.length) 
+                        ? templates.map((item: Template, i: number)=> 
+                            <Link href={`services/${item.id}`} passHref key={i}>
+                                <ListItem button component="a">
+                                    <ListItemIcon sx={{ minWidth: '34px' }}>
+                                        <ModeEditOutlineOutlinedIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.title} />
+                                </ListItem>
+                            </Link>
+                        )
+                        : <Typography className='mx-4'>No template found!</Typography>
+                    }
                 </List>
                 <Box className='px-4'>
                     <Link href={`/services/add/${service?.id}`} passHref>

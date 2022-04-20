@@ -3,7 +3,7 @@ import React from 'react'
 
 const EditTemplate = () => {
   return (
-	<SingleTemplate />
+    <SingleTemplate />
   )
 }
 

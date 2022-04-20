@@ -1,9 +1,15 @@
 export interface Template {
+    id: number
     title: string,
-    id: string | number
+    template: string,
+    data: string,
+    attachment: string,
+    isActive: true,
+    serviceId: number
 }
 
 export interface Service {
+    id: number
     title: string,
-    id: string | number
+    templates?: Template[] | []
 }

@@ -33,7 +33,10 @@ const Services = () => {
 					</Grid>
 				)}
 			</Grid>
-			<TemplateListDrawer show={templateListDrawer} onClose={()=>setTemplateListDrawer(false)} service={selectedService}/>
+			{selectedService 
+				? <TemplateListDrawer show={templateListDrawer} onClose={()=>setTemplateListDrawer(false)} service={selectedService}/>
+				: <></>
+			}
 			<AddServiceModal open={addServiceModal} toggle={()=>setAddServiceModal(false)}/>
 		</React.Fragment>
 	)
