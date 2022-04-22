@@ -18,7 +18,7 @@ export type NextApplicationPage<P = any, IP = P> = NextPage<P, IP> & {
 }
 
 function MyApp(props: AppProps) {
-	const { Component, pageProps }: { Component: NextApplicationPage; pageProps: any } = props;
+	const { Component, pageProps }: { Component: any; pageProps: any } = props;
 	const router = useRouter();
 	const [showUi, setShowUi] = useState(Component.protected ? false : true);
 	

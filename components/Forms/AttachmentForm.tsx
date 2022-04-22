@@ -2,16 +2,23 @@ import { Divider, Grid, IconButton, TextField, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Box } from '@mui/system'
 import React from 'react'
-import { FileInput, FormGroup } from '@utils/FormElements'
+import { FileInput, FormGroup, FormikTextField } from '@utils/FormElements'
 
 interface AttachmentFormProps {
     id: number,
     className?: string,
     onDelete: Function,
-    index: number
+    index: number,
+    errors: any,
+    touched: any,
+    handleChange: any,
+    handleBlur: any,
+    values: any
 }
 
-const AttachmentForm = ({ index, id, className, onDelete }: AttachmentFormProps) => {
+const AttachmentForm = ({ index, id, className, onDelete, errors, touched, handleBlur, handleChange, values }: AttachmentFormProps) => {
+    // console.log('touched:', touched)
+    // console.log('errors:', errors)
     return (
         <React.Fragment>
             <Box className={className}>
@@ -23,14 +30,30 @@ const AttachmentForm = ({ index, id, className, onDelete }: AttachmentFormProps)
                 </Box>
                 <Grid container spacing={2} className="mb-3">
                     <Grid item xs={4}>
-                        <FormGroup label='Choose Template'>
-                            <FileInput accept=".html, .ejs" onChange={(e: any): void => console.log(e)} />
-                        </FormGroup>
+                        <FormikTextField
+                            label="Choose Template"
+                            name={`attachment.${index}.attachmentName`}
+                            value={values.attachment[index].attachmentName}
+                            errors={errors}
+                            touched={touched}
+                            type='file'
+                            onChange={()=>handleChange}
+							onBlur={()=>handleBlur}
+                            accept='.html,.ejs'
+                        />
                     </Grid>
                     <Grid item xs={8}>
-                        <FormGroup label='JSON format'>
-                            <TextField fullWidth multiline rows={11} />
-                        </FormGroup>
+                        <FormikTextField
+                            label="JSON format data"
+                            name={`attachment.${index}.attachmentData`}
+                            errors={errors}
+                            touched={touched} 
+                            value={values.attachment[index].attachmentData}
+                            multiline
+                            rows={11}
+                            onChange={()=>handleChange}
+							onBlur={()=>handleBlur}
+                        />
                     </Grid>
                 </Grid>
             </Box>

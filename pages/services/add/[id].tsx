@@ -1,9 +1,10 @@
 import SingleTemplate from '@components/SingleTemplate/SingleTemplate'
+import { ServiceActionType } from '@enums/enums'
 import React from 'react'
 
 const AddService = () => {
   return (
-    <SingleTemplate />
+    <SingleTemplate type={ServiceActionType.ADD} />
   )
 }
 

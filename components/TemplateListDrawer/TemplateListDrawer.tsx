@@ -25,6 +25,7 @@ const TemplateListDrawer = ({ show, onClose, service }: TemplateListDrawerProps)
     
     useEffect(() => {
         getService();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [service?.id])
     
     return (

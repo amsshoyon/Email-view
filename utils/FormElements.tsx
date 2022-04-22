@@ -6,52 +6,20 @@ import { EmailRegex } from "./validator"
 
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
-interface FormGroupProps {
-    children: React.ReactNode,
-    label?: string
-}
-
-export const FormGroup = ({ children, label }: FormGroupProps) => {
-    return (
-        <Box className="mb-3">
-            <Typography className="mb-2">{label}</Typography>
-            {children}
-        </Box>
-    )
-}
-
-// -----------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------
-interface FileInputProps {
-    accept: string,
-    onChange: Function
-}
-
-export const FileInput = (props: FileInputProps) => {
-    return (
-        <TextField type='File'
-            variant="outlined"
-            inputProps={{ accept: props.accept }}
-            fullWidth
-            InputLabelProps={{
-                shrink: true,
-            }}
-            disabled={false}
-            onChange={(event) => props.onChange(event)}
-        />
-    )
-}
-
-// -----------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------
 interface MultiValueInputProps {
+    label?: string,
+    name: string,
     value: string[],
     defaultValue?: string,
-    onChange?: Function
+    errors: any,
+    touched: any,
+    onBlur: ChangeEventHandler,
+    onChange: ChangeEventHandler,
+    className?: string
 }
 
-export const MultiValueInput = (props: MultiValueInputProps) => {
-    const [values, setValues] = useState(props.value ? props.value : []);
+export const MultiValueInput = ({ name, label, className, value, defaultValue, errors, touched, onChange, onBlur, ...rest }: MultiValueInputProps) => {
+    const [values, setValues] = useState(value ? value : []);
     const [currValue, setCurrValue] = useState<string>("");
 
     const handleKeyUp = (e: any): void => {
@@ -93,18 +61,28 @@ export const MultiValueInput = (props: MultiValueInputProps) => {
     }
 
     return (
-        <React.Fragment>
-
+        <Box className={className}>
             {StackLabel()}
-
             <TextField value={currValue}
+                label={label}
                 onChange={handleChange}
+                onBlur={onBlur}
                 onKeyDown={handleKeyUp}
                 variant="outlined"
                 fullWidth
                 type="email"
+                {...rest}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                inputProps={{
+                    autoComplete: 'new-password',
+                    form: { autoComplete: 'off' },
+                }}
+                error={errors[name] && touched[name] ? true : false}
+                helperText={errors[name] && touched[name] ? errors[name] : ''}
             />
-        </React.Fragment>
+        </Box>
     )
 }
 
@@ -114,22 +92,24 @@ interface FormikTextFieldProps {
     type?: string,
     label?: string,
     name: string,
-    value: string | number,
-    errors: any,
-    touched: any,
-    onBlur: ChangeEventHandler,
-    onChange: ChangeEventHandler
+    value?: string | number,
+    errors?: any,
+    touched?: any,
+    onBlur?: ChangeEventHandler,
+    onChange?: ChangeEventHandler,
+    accept?: string,
+    className?: string
 }
 
-export const FormikTextField = ({ name, type, label, onChange, onBlur, value, errors, touched, ...rest }: FormikTextFieldProps) => {
+export const FormikTextField = ({ name, className, type = 'text', label, onChange, onBlur, accept, value, errors, touched, ...rest }: FormikTextFieldProps) => {
     const [showPassword, setShowPassword] = useState(false);
     return (
         <TextField
-            type={type === 'password' ? (showPassword ? 'text' : 'password') : 'text'}
+            type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
             label={label}
             name={name}
             variant="outlined"
-            className='mb-4'
+            className={className}
             value={value}
             fullWidth
             InputLabelProps={{
@@ -143,8 +123,7 @@ export const FormikTextField = ({ name, type, label, onChange, onBlur, value, er
             inputProps={{
                 autoComplete: 'new-password',
                 form: { autoComplete: 'off' },
-            }}
-            InputProps={{
+                accept: accept,
                 endAdornment:
                     type === "password" ? (
                         <InputAdornment
@@ -152,7 +131,7 @@ export const FormikTextField = ({ name, type, label, onChange, onBlur, value, er
                             classes={{ positionStart: "0px" }}
                         >
                             <IconButton
-                                onClick={()=>setShowPassword(!showPassword)}
+                                onClick={() => setShowPassword(!showPassword)}
                             >
                                 {showPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>

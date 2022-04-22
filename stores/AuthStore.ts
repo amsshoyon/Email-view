@@ -22,7 +22,7 @@ class Auth {
 				this.setIsLoggedIn(true);
 				this.setUser(res.data);
 			} else {
-				Notify(res?.message, 'error');
+				this.logout();
 			}
 		}
 	}

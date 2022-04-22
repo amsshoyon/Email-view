@@ -1,55 +1,163 @@
 import AttachmentForm from '@components/Forms/AttachmentForm'
-import { Button, Divider, Grid, TextField, Typography } from '@mui/material'
+import { ServiceActionType } from '@enums/enums'
+import { Box, Button, Divider, Grid, Typography } from '@mui/material'
 import { Notify } from '@utils/common'
-import { FileInput, FormGroup, MultiValueInput } from '@utils/FormElements'
+import { FormGroup, FormikTextField, MultiValueInput } from '@utils/FormElements'
+import { FieldArray, Form, Formik, FormikProps } from 'formik'
+import * as Yup from 'yup'
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 
-const SingleTemplate = () => {
+interface pageProps {
+	type: ServiceActionType
+}
+
+const validationSchema = Yup.object().shape({
+	title: Yup.string().required('Field required'),
+	templateName: Yup.mixed().required('File is required'),
+	data: Yup.string().required('Field required'),
+	cc: Yup.string().required('Field required'),
+	bcc: Yup.string().required('Field required'),
+	serviceId: Yup.number().required('Field required'),
+	attachment: Yup.array().of(
+		Yup.object().shape({
+			attachmentName: Yup.mixed().required('File is required'),
+			attachmentData: Yup.string().required('Field required'),
+		})
+	)
+});
+
+const handleSubmit = () => {
+
+}
+
+const SingleTemplate = ({ type }: pageProps) => {
 	const [attachments, setAttachments] = useState<number[]>([])
-	
-	const addAttachment = () => {
-		setAttachments([...attachments, attachments.length])
+	const router = useRouter();
+
+	const initialValues = {
+		serviceId: router.query.id,
+		title: '',
+		templateName: '',
+		data: '',
+		cc: '',
+		bcc: '',
+		attachment: []
 	}
 
-	const removeAttachmentByIndex = ( index: number ): void => {
-		let filtered = attachments.filter(item=> item !== index);
-		if(confirm("Delete field?")) setAttachments(filtered);
+	const addAttachment = (values: any, setValues: any) => {
+		// setAttachments([...attachments, attachments.length])
+		const attachment = [...values.attachment];
+		attachment.push({ attachmentName: '', attachmentData: '' });
+		setValues({ ...values, attachment })
+	}
+
+	const removeAttachmentByIndex = (index: number): void => {
+		let filtered = attachments.filter(item => item !== index);
+		if (confirm("Delete field?")) setAttachments(filtered);
 		Notify('Field deleted', 'success');
 	}
 
 	return (
 		<React.Fragment>
 			<Typography variant='h5' mb={4}>Email Settings</Typography>
-			<Grid container spacing={2} className="mb-6">
-				<Grid item xs={4}>
-					<FormGroup label='Choose Template'>
-						<FileInput accept=".html, .ejs" onChange={(e:any):void => console.log(e)} />
-					</FormGroup>
+			<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+				{(props: FormikProps<any>) => {
+					const { values, touched, errors, handleBlur, handleChange, isSubmitting, setValues } = props
+					return (
+						<Form>
+							<input type='hidden' name='serviceId' value={values.serviceId} />
+							<Grid container spacing={2} className="mb-6">
+								<Grid item xs={4}>
+									<FormikTextField
+										label="Title"
+										name='title'
+										value={values.title}
+										errors={errors}
+										touched={touched}
+										onChange={handleChange}
+										onBlur={handleBlur}
+										className="mb-6"
+									/>
+									<FormikTextField
+										label="Choose Template"
+										name='templateName'
+										value={values.templateName}
+										errors={errors}
+										touched={touched}
+										onChange={handleChange}
+										onBlur={handleBlur}
+										type='file'
+										accept='.html,.ejs'
+										className='mb-6'
+									/>
 
-					<FormGroup label='Add CC'>
-						<MultiValueInput value={[]} />
-					</FormGroup>
+									<MultiValueInput
+										label='Add CC'
+										name='cc'
+										value={values.cc}
+										errors={errors}
+										touched={touched}
+										onChange={handleChange}
+										onBlur={handleBlur}
+										className="mb-6"
+									/>
 
-					<FormGroup label='Add BCC'>
-						<MultiValueInput value={[]} />
-					</FormGroup>
-				</Grid>
+									<MultiValueInput
+										label='Add BCC'
+										name='bcc'
+										value={values.bcc}
+										errors={errors}
+										touched={touched}
+										onChange={handleChange}
+										onBlur={handleBlur}
+									/>
+								</Grid>
 
-				<Grid item xs={8}>
-					<FormGroup label='JSON format'>
-						<TextField fullWidth multiline rows={11} />
-					</FormGroup>
-				</Grid>
-			</Grid>
+								<Grid item xs={8}>
+									<FormikTextField
+										label="JSON format data"
+										name='data'
+										errors={errors}
+										touched={touched}
+										onChange={handleChange}
+										onBlur={handleBlur}
+										multiline
+										rows={11}
+									/>
+								</Grid>
+							</Grid>
 
-			<Divider className='mb-6' />
+							<Divider className='mb-6' />
 
-			{attachments.map((key, i) => <AttachmentForm id={key} index={i} key={key} onDelete={removeAttachmentByIndex} /> )}
+							<FieldArray name="attachment">
+								{() => (values.attachment.map((key: any, i: number) => {
+									return (
+										<AttachmentForm
+											id={key}
+											index={i}
+											key={key}
+											onDelete={removeAttachmentByIndex}
+											values={values}
+											touched={touched}
+											errors={errors}
+											handleBlur={handleBlur}
+											handleChange={handleChange}
+										/>
+									);
+								}))}
+							</FieldArray>
 
-			<div className="flex">
-				<Button variant="contained" color='info' className='mr-3'>Save</Button>
-				<Button variant="contained" onClick={() => addAttachment()}>Add Attachment</Button>
-			</div>
+							{/* {attachments.map((key, i) => <AttachmentForm id={key} index={i} key={key} onDelete={removeAttachmentByIndex} />)} */}
+
+							<div className="flex">
+								<Button variant="contained" color='info' className='mr-3' type='submit'>Save</Button>
+								<Button variant="contained" onClick={() => addAttachment(values, setValues)}>Add Attachment</Button>
+							</div>
+						</Form>
+					)
+				}}
+			</Formik>
 		</React.Fragment>
 	)
 }
