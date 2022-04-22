@@ -143,7 +143,6 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
                         </InputAdornment>
                     ) : null,
             }}
-            multiline
             rows={rows}
         />
     )
