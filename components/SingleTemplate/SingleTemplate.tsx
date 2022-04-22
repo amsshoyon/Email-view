@@ -1,8 +1,8 @@
 import AttachmentForm from '@components/Forms/AttachmentForm'
 import { ServiceActionType } from '@enums/enums'
-import { Box, Button, Divider, Grid, Typography } from '@mui/material'
+import { Button, Divider, Grid, Typography } from '@mui/material'
 import { Notify } from '@utils/common'
-import { FormGroup, FormikTextField, MultiValueInput } from '@utils/FormElements'
+import { FormikTextField, MultiValueInput } from '@utils/FormElements'
 import { FieldArray, Form, Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import React, { useState } from 'react'
@@ -45,19 +45,6 @@ const SingleTemplate = ({ type }: pageProps) => {
 		attachment: []
 	}
 
-	const addAttachment = (values: any, setValues: any) => {
-		// setAttachments([...attachments, attachments.length])
-		const attachment = [...values.attachment];
-		attachment.push({ attachmentName: '', attachmentData: '' });
-		setValues({ ...values, attachment })
-	}
-
-	const removeAttachmentByIndex = (index: number): void => {
-		let filtered = attachments.filter(item => item !== index);
-		if (confirm("Delete field?")) setAttachments(filtered);
-		Notify('Field deleted', 'success');
-	}
-
 	return (
 		<React.Fragment>
 			<Typography variant='h5' mb={4}>Email Settings</Typography>
@@ -65,7 +52,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 				{(props: FormikProps<any>) => {
 					const { values, touched, errors, handleBlur, handleChange, isSubmitting, setValues } = props
 					return (
-						<Form>
+						<Form noValidate autoComplete="off">
 							<input type='hidden' name='serviceId' value={values.serviceId} />
 							<Grid container spacing={2} className="mb-6">
 								<Grid item xs={4}>
@@ -130,30 +117,29 @@ const SingleTemplate = ({ type }: pageProps) => {
 
 							<Divider className='mb-6' />
 
-							<FieldArray name="attachment">
-								{() => (values.attachment.map((key: any, i: number) => {
-									return (
-										<AttachmentForm
-											id={key}
-											index={i}
-											key={key}
-											onDelete={removeAttachmentByIndex}
-											values={values}
-											touched={touched}
-											errors={errors}
-											handleBlur={handleBlur}
-											handleChange={handleChange}
-										/>
-									);
-								}))}
-							</FieldArray>
-
-							{/* {attachments.map((key, i) => <AttachmentForm id={key} index={i} key={key} onDelete={removeAttachmentByIndex} />)} */}
-
-							<div className="flex">
-								<Button variant="contained" color='info' className='mr-3' type='submit'>Save</Button>
-								<Button variant="contained" onClick={() => addAttachment(values, setValues)}>Add Attachment</Button>
-							</div>
+							<FieldArray
+								name="attachment"
+								render={arrayHelpers => (
+									<React.Fragment>
+										{values.attachment.map((key:any, i:number) => (
+											<AttachmentForm key={i}
+												index={i}
+												id={key}
+												onDelete={() => arrayHelpers.remove(i)}
+												values={values}
+												touched={touched}
+												errors={errors}
+												handleBlur={handleBlur}
+												handleChange={handleChange}
+											/>
+										))}
+										<div className="flex">
+											<Button variant="contained" color='info' className='mr-3' type='submit'>Save</Button>
+											<Button variant="contained" onClick={() => arrayHelpers.push({ attachmentName: '', attachmentData: '' })}>Add Attachment</Button>
+										</div>
+									</React.Fragment>
+								)}
+							/>
 						</Form>
 					)
 				}}

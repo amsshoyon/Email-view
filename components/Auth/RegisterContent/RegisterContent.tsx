@@ -74,6 +74,7 @@ const RegisterContent = () => {
                             touched={touched}
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            className='mb-6'
                         />
                         <FormikTextField
                             label="Password"
@@ -84,6 +85,7 @@ const RegisterContent = () => {
                             touched={touched}
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            className='mb-6'
                         />
                         <FormikTextField
                             label="Confirm Password"
@@ -94,6 +96,7 @@ const RegisterContent = () => {
                             touched={touched}
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            className='mb-6'
                         />
                         <Box className='flex justify-between items-center mb-2'>
                             <Button variant='contained' type='submit' disabled={isSubmitting}>Signup</Button>

@@ -98,11 +98,14 @@ interface FormikTextFieldProps {
     onBlur?: ChangeEventHandler,
     onChange?: ChangeEventHandler,
     accept?: string,
-    className?: string
+    className?: string,
+    dynamicFieldName?: string
 }
 
-export const FormikTextField = ({ name, className, type = 'text', label, onChange, onBlur, accept, value, errors, touched, ...rest }: FormikTextFieldProps) => {
+export const FormikTextField = (props: FormikTextFieldProps) => {
+    const { name, className='mb-6', type = 'text', label, onChange, onBlur, accept, value, errors, touched, dynamicFieldName, ...rest } = props;
     const [showPassword, setShowPassword] = useState(false);
+    const fieldName = dynamicFieldName ? dynamicFieldName : name;
     return (
         <TextField
             type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
@@ -112,14 +115,14 @@ export const FormikTextField = ({ name, className, type = 'text', label, onChang
             className={className}
             value={value}
             fullWidth
+            onChange={onChange}
+            onBlur={onBlur}
+            error={errors[fieldName] && touched[fieldName] ? true : false}
+            helperText={errors[fieldName] && touched[fieldName] ? errors[fieldName] : ''}
+            {...rest}
             InputLabelProps={{
                 shrink: true,
             }}
-            onChange={onChange}
-            onBlur={onBlur}
-            error={errors[name] && touched[name] ? true : false}
-            helperText={errors[name] && touched[name] ? errors[name] : ''}
-            {...rest}
             inputProps={{
                 autoComplete: 'new-password',
                 form: { autoComplete: 'off' },
