@@ -108,6 +108,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 										touched={touched}
 										onChange={handleChange}
 										onBlur={handleBlur}
+										multiline
 										rows={11}
 									/>
 								</Grid>

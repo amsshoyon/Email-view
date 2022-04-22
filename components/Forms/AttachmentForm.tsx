@@ -52,6 +52,7 @@ const AttachmentForm = ({ index, id, className, onDelete, errors, touched, handl
                             touched={touchState ? touchState : {}}
                             value={values.attachment[index].attachmentData}
                             rows={11}
+                            multiline
                             onChange={handleChange}
 							onBlur={handleBlur}
                         />
