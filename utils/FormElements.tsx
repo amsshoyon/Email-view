@@ -127,7 +127,8 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
             inputProps={{
                 autoComplete: 'new-password',
                 form: { autoComplete: 'off' },
-                accept: accept,
+            }}
+            InputProps={{
                 endAdornment:
                     type === "password" ? (
                         <InputAdornment
@@ -135,7 +136,7 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
                             classes={{ positionStart: "0px" }}
                         >
                             <IconButton
-                                onClick={() => setShowPassword(!showPassword)}
+                                onClick={()=>setShowPassword(!showPassword)}
                             >
                                 {showPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
