@@ -108,19 +108,16 @@ const SingleTemplate = ({ type }: pageProps) => {
 										touched={touched}
 										onChange={handleChange}
 										onBlur={handleBlur}
-										multiline
 										rows={11}
 									/>
 								</Grid>
 							</Grid>
 
 							<Divider className='mb-6' />
-
-							<FieldArray
-								name="attachment"
+							<FieldArray name="attachment"
 								render={arrayHelpers => (
 									<React.Fragment>
-										{values.attachment.map((key:any, i:number) => (
+										{values.attachment.map((key: any, i: number) => (
 											<AttachmentForm key={i}
 												index={i}
 												id={key}
@@ -134,7 +131,9 @@ const SingleTemplate = ({ type }: pageProps) => {
 										))}
 										<div className="flex">
 											<Button variant="contained" color='info' className='mr-3' type='submit'>Save</Button>
-											<Button variant="contained" onClick={() => arrayHelpers.push({ attachmentName: '', attachmentData: '' })}>Add Attachment</Button>
+											<Button variant="contained" onClick={() => arrayHelpers.push({ attachmentName: '', attachmentData: '' })}>
+												Add Attachment
+											</Button>
 										</div>
 									</React.Fragment>
 								)}

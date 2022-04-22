@@ -100,12 +100,11 @@ interface FormikTextFieldProps {
     accept?: string,
     className?: string,
     dynamicFieldName?: string,
-    multiline?: any,
     rows?: number
 }
 
 export const FormikTextField = (props: FormikTextFieldProps) => {
-    const { name, className='mb-6', type = 'text', label, onChange, onBlur, accept, value, errors, touched, dynamicFieldName, multiline, rows, ...rest } = props;
+    const { name, className='mb-6', type = 'text', label, onChange, onBlur, accept, value, errors, touched, dynamicFieldName, rows, ...rest } = props;
     const [showPassword, setShowPassword] = useState(false);
     const fieldName = dynamicFieldName ? dynamicFieldName : name;
     return (
