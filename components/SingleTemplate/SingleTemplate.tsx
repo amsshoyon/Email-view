@@ -32,7 +32,6 @@ const handleSubmit = () => {
 }
 
 const SingleTemplate = ({ type }: pageProps) => {
-	const [attachments, setAttachments] = useState<number[]>([])
 	const router = useRouter();
 
 	const initialValues = {

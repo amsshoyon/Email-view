@@ -17,7 +17,6 @@ interface AttachmentFormProps {
 }
 
 const AttachmentForm = ({ index, id, className, onDelete, errors, touched, handleBlur, handleChange, values }: AttachmentFormProps) => {
-    console.log('values:', values)
     const errorState = errors && errors.attachment && errors.attachment[index];
     const touchState = touched && touched.attachment && touched.attachment[index];
     return (
