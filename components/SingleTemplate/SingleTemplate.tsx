@@ -1,3 +1,4 @@
+import React from 'react'
 import AttachmentForm from '@components/Forms/AttachmentForm'
 import { ServiceActionType } from '@enums/enums'
 import { Button, Divider, Grid, Typography } from '@mui/material'
@@ -5,8 +6,8 @@ import { Notify } from '@utils/common'
 import { FormikTextField, MultiValueInput } from '@utils/FormElements'
 import { FieldArray, Form, Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
-import React, { useState } from 'react'
 import { useRouter } from 'next/router'
+import { createTemplate } from 'requests/templates'
 
 interface pageProps {
 	type: ServiceActionType
@@ -43,8 +44,15 @@ const validationSchema = Yup.object().shape({
 	)
 });
 
-const handleSubmit = (values: FieldValues, setSubmitting: any) => {
-	console.log('values:', values)
+const handleSubmit = async (values: FieldValues, setSubmitting: any) => {
+	
+	let res = await createTemplate(values);
+        if (res?.statusCode === 201) {
+            Notify('Template added', 'success');
+        } else {
+            Notify(res?.message, 'error');
+        }
+        setSubmitting(false);
 }
 
 const SingleTemplate = ({ type }: pageProps) => {
@@ -90,10 +98,9 @@ const SingleTemplate = ({ type }: pageProps) => {
 									<FormikTextField
 										label="Choose Template"
 										name='templateName'
-										value={values.templateName}
 										errors={errors}
 										touched={touched}
-										onChange={handleChange}
+										onChange={(e)=>values.templateName = e.currentTarget.files[0]}
 										onBlur={handleBlur}
 										type='file'
 										accept='.html,.ejs'
