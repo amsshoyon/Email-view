@@ -7,4 +7,5 @@ const EditTemplate = () => {
   )
 }
 
+EditTemplate.protected = true
 export default EditTemplate

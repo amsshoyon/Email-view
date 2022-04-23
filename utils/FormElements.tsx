@@ -14,17 +14,18 @@ interface MultiValueInputProps {
     errors: any,
     touched: any,
     onBlur: ChangeEventHandler,
-    onChange: ChangeEventHandler,
+    onChange: Function,
     className?: string
 }
 
-export const MultiValueInput = ({ name, label, className, value, defaultValue, errors, touched, onChange, onBlur, ...rest }: MultiValueInputProps) => {
+export const MultiValueInput = ({ name, label, className='mb-6', value, defaultValue, errors, touched, onChange, onBlur, ...rest }: MultiValueInputProps) => {
     const [values, setValues] = useState(value ? value : []);
     const [currValue, setCurrValue] = useState<string>("");
 
     const handleKeyUp = (e: any): void => {
         let value = e.target.value;
         if (e.keyCode == 32 && value.trim() && EmailRegex.test(value)) {
+            onChange([...values, value].toString());
             setValues([...values, value]);
             setCurrValue("");
         }

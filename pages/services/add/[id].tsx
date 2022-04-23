@@ -7,5 +7,5 @@ const AddService = () => {
     <SingleTemplate type={ServiceActionType.ADD} />
   )
 }
-
+AddService.protected = true
 export default AddService

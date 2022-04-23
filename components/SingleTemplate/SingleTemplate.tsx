@@ -12,13 +12,29 @@ interface pageProps {
 	type: ServiceActionType
 }
 
+interface AttachmentValues {
+	attachmentName: any;
+	attachmentData: string;
+}
+
+interface FieldValues {
+	serviceId: any;
+	title: string;
+	cc?: string;
+	bcc?: string
+	data?: string
+	templateName?: any;
+	attachment?: AttachmentValues[] | [];
+
+}
+
 const validationSchema = Yup.object().shape({
+	serviceId: Yup.number().required('Field required'),
 	title: Yup.string().required('Field required'),
 	templateName: Yup.mixed().required('File is required'),
 	data: Yup.string().required('Field required'),
 	cc: Yup.string().required('Field required'),
 	bcc: Yup.string().required('Field required'),
-	serviceId: Yup.number().required('Field required'),
 	attachment: Yup.array().of(
 		Yup.object().shape({
 			attachmentName: Yup.mixed().required('File is required'),
@@ -27,15 +43,16 @@ const validationSchema = Yup.object().shape({
 	)
 });
 
-const handleSubmit = () => {
-
+const handleSubmit = (values: FieldValues, setSubmitting: any) => {
+	console.log('values:', values)
 }
 
 const SingleTemplate = ({ type }: pageProps) => {
 	const router = useRouter();
+	const id = router.query.id;
 
 	const initialValues = {
-		serviceId: router.query.id,
+		serviceId: id,
 		title: '',
 		templateName: '',
 		data: '',
@@ -47,9 +64,15 @@ const SingleTemplate = ({ type }: pageProps) => {
 	return (
 		<React.Fragment>
 			<Typography variant='h5' mb={4}>Email Settings</Typography>
-			<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+			<Formik 
+				initialValues={initialValues} 
+				validationSchema={validationSchema} 
+				onSubmit={(values, { setSubmitting }) => {
+					handleSubmit(values, setSubmitting);
+				}}
+			>
 				{(props: FormikProps<any>) => {
-					const { values, touched, errors, handleBlur, handleChange, isSubmitting, setValues } = props
+					const { values, touched, errors, handleBlur, handleChange, isSubmitting } = props
 					return (
 						<Form noValidate autoComplete="off">
 							<input type='hidden' name='serviceId' value={values.serviceId} />
@@ -63,7 +86,6 @@ const SingleTemplate = ({ type }: pageProps) => {
 										touched={touched}
 										onChange={handleChange}
 										onBlur={handleBlur}
-										className="mb-6"
 									/>
 									<FormikTextField
 										label="Choose Template"
@@ -84,9 +106,8 @@ const SingleTemplate = ({ type }: pageProps) => {
 										value={values.cc}
 										errors={errors}
 										touched={touched}
-										onChange={handleChange}
+										onChange={(val: string)=> values.cc = val}
 										onBlur={handleBlur}
-										className="mb-6"
 									/>
 
 									<MultiValueInput
@@ -95,7 +116,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 										value={values.bcc}
 										errors={errors}
 										touched={touched}
-										onChange={handleChange}
+										onChange={(val: string)=> values.bcc = val}
 										onBlur={handleBlur}
 									/>
 								</Grid>
