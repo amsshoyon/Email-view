@@ -97,7 +97,7 @@ interface FormikTextFieldProps {
     errors?: any,
     touched?: any,
     onBlur?: ChangeEventHandler,
-    onChange?: ChangeEventHandler,
+    onChange?: ChangeEventHandler | Function,
     accept?: string,
     className?: string,
     dynamicFieldName?: string,
@@ -109,6 +109,12 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
     const { name, className='mb-6', type = 'text', label, onChange, onBlur, accept, value, errors, touched, dynamicFieldName, multiline=false, rows, ...rest } = props;
     const [showPassword, setShowPassword] = useState(false);
     const fieldName = dynamicFieldName ? dynamicFieldName : name;
+
+    const fileData = async (e: any) => {
+        const file = e.currentTarget.files[0];
+		let fileData = await file.text();
+        return JSON.stringify(fileData);
+    }
     return (
         <TextField
             type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
@@ -118,7 +124,10 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
             className={className}
             value={value}
             fullWidth
-            onChange={onChange}
+            onChange={(e)=> {
+                if(type === 'file') return onChange(fileData(e));
+                return onChange(e);
+            }}
             onBlur={onBlur}
             error={errors[fieldName] && touched[fieldName] ? true : false}
             helperText={errors[fieldName] && touched[fieldName] ? errors[fieldName] : ''}

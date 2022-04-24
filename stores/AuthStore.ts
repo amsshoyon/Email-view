@@ -2,7 +2,6 @@ import { deleteCookie, getCookie } from '@utils/clientSideCookies';
 import { makeAutoObservable } from 'mobx'
 import { User } from 'types/user'
 import { getUser } from 'requests/auth';
-import { Notify } from '@utils/common';
 
 class Auth {
 	isLoggedIn: boolean = false

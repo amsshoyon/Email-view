@@ -34,11 +34,10 @@ const AttachmentForm = ({ index, id, className, onDelete, errors, touched, handl
                             label="Choose Template"
                             name={`attachment[${index}].attachmentName`}
                             dynamicFieldName='attachmentName'
-                            value={values.attachment[index].attachmentName}
                             errors={errorState ? errorState : {}}
                             touched={touchState ? touchState : {}}
                             type='file'
-                            onChange={handleChange}
+                            onChange={(value)=>values.attachment[index].attachmentName = value}
 							onBlur={handleBlur}
                             accept='.html,.ejs'
                         />

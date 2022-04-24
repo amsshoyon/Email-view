@@ -44,17 +44,6 @@ const validationSchema = Yup.object().shape({
 	)
 });
 
-const handleSubmit = async (values: FieldValues, setSubmitting: any) => {
-	
-	let res = await createTemplate(values);
-        if (res?.statusCode === 201) {
-            Notify('Template added', 'success');
-        } else {
-            Notify(res?.message, 'error');
-        }
-        setSubmitting(false);
-}
-
 const SingleTemplate = ({ type }: pageProps) => {
 	const router = useRouter();
 	const id = router.query.id;
@@ -68,6 +57,17 @@ const SingleTemplate = ({ type }: pageProps) => {
 		bcc: '',
 		attachment: []
 	}
+
+	const handleSubmit = async (values: FieldValues, setSubmitting: any) => {
+		let res = await createTemplate(values);
+			if (res?.statusCode === 201) {
+				Notify('Template added', 'success');
+			} else {
+				Notify(res?.message, 'error');
+			}
+			setSubmitting(false);
+	}
+	
 
 	return (
 		<React.Fragment>
@@ -100,7 +100,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 										name='templateName'
 										errors={errors}
 										touched={touched}
-										onChange={(e)=>values.templateName = e.currentTarget.files[0]}
+										onChange={(value)=>values.templateName = value}
 										onBlur={handleBlur}
 										type='file'
 										accept='.html,.ejs'
