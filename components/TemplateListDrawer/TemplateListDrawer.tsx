@@ -14,6 +14,7 @@ interface TemplateListDrawerProps {
 
 const TemplateListDrawer = ({ show, onClose, service }: TemplateListDrawerProps) => {
     const [templates, setTemplates] = useState<Template[]>([]);
+    console.log('templates:', templates)
 
     const getService = async () => {
         let res = await getServiceById(service ? service.id : 0);

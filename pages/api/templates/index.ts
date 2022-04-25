@@ -24,22 +24,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             })
     }
     if( method === 'POST'){
-        console.log('req.body:', req.body)
-        // await fetch(`${process.env.API_BASE_URL}/template`, {
-        //     method: "POST",
-        //     headers: {
-        //         'Content-Type': "multipart/form-data",
-        //         'Authorization': `Bearer ${token}`
-        //     },
-        //     body: JSON.stringify(req.body)
-        // })
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         res.status(200).json(data)
-        //     })
-        //     .catch(error => {
-        //         console.log(error)
-        //     })
+        await fetch(`${process.env.API_BASE_URL}/template`, {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(req.body)
+        })
+            .then(res => res.json())
+            .then(data => {
+                res.status(200).json(data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
     
     
