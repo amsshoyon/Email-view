@@ -2,6 +2,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { Chip, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import React, { ChangeEventHandler, SetStateAction, useState } from "react"
+import { ToBase64 } from "./common"
 import { EmailRegex } from "./validator"
 
 // -----------------------------------------------------------------------------------------------
@@ -110,10 +111,11 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
     const [showPassword, setShowPassword] = useState(false);
     const fieldName = dynamicFieldName ? dynamicFieldName : name;
 
+    
     const fileData = async (e: any) => {
         const file = e.currentTarget.files[0];
-		let fileData = await file.text();
-        return JSON.stringify(fileData);
+        const buffer = await ToBase64(file);
+        return buffer;
     }
     return (
         <TextField
