@@ -10,7 +10,7 @@ import { EmailRegex } from "./validator"
 interface MultiValueInputProps {
     label?: string,
     name: string,
-    value: string[],
+    value: string,
     defaultValue?: string,
     errors: any,
     touched: any,
@@ -19,8 +19,9 @@ interface MultiValueInputProps {
     className?: string
 }
 
-export const MultiValueInput = ({ name, label, className='mb-6', value, defaultValue, errors, touched, onChange, onBlur, ...rest }: MultiValueInputProps) => {
-    const [values, setValues] = useState(value ? value : []);
+export const MultiValueInput = (props: MultiValueInputProps) => {
+    const { name, label, className='mb-6', value, defaultValue, errors, touched, onChange, onBlur, ...rest } = props;
+    const [values, setValues] = useState(value ? value.split(',') : []);
     const [currValue, setCurrValue] = useState<string>("");
 
     const handleKeyUp = (e: any): void => {
@@ -98,7 +99,7 @@ interface FormikTextFieldProps {
     errors?: any,
     touched?: any,
     onBlur?: ChangeEventHandler,
-    onChange?: ChangeEventHandler | Function,
+    onChange?: any,
     accept?: string,
     className?: string,
     dynamicFieldName?: string,
@@ -111,12 +112,16 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
     const [showPassword, setShowPassword] = useState(false);
     const fieldName = dynamicFieldName ? dynamicFieldName : name;
 
-    
-    const fileData = async (e: any) => {
-        const file = e.currentTarget.files[0];
-        const buffer = await ToBase64(file);
-        return buffer;
+    const handleChange = async (e: any)=> {
+        if(type === 'file') {
+            const file = e.target.files[0];
+            const base64 = await ToBase64(file);
+            onChange(base64);
+        } else {
+            onChange(e);
+        }
     }
+
     return (
         <TextField
             type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
@@ -126,10 +131,7 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
             className={className}
             value={value}
             fullWidth
-            onChange={(e)=> {
-                if(type === 'file') return onChange(fileData(e));
-                return onChange(e);
-            }}
+            onChange={(e)=> handleChange(e)}
             onBlur={onBlur}
             error={errors[fieldName] && touched[fieldName] ? true : false}
             helperText={errors[fieldName] && touched[fieldName] ? errors[fieldName] : ''}

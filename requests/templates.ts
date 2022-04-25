@@ -26,13 +26,8 @@ export const getServiceById = async (id: number): Promise<any> => {
 }
 
 export const createTemplate = async (values: any): Promise<any> => {
-    console.log('values:', values)
     try {
-        let result = await axios.post(`${baseUrl}`, values, {
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        });
+        let result = await axios.post(`${baseUrl}`, values);
         if(result.data) return result.data;
         return null
     } catch (error) {

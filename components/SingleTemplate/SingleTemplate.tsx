@@ -50,11 +50,11 @@ const SingleTemplate = ({ type }: pageProps) => {
 
 	const initialValues = {
 		serviceId: id,
-		title: '',
+		title: 'Test Title',
 		templateName: '',
-		data: '',
-		cc: '',
-		bcc: '',
+		data: '{test data}',
+		cc: 'amssshoyon@gmail.com,raniahridi@gmail.com',
+		bcc: 'tech@sheba.xyz',
 		attachment: []
 	}
 
@@ -95,12 +95,13 @@ const SingleTemplate = ({ type }: pageProps) => {
 										onChange={handleChange}
 										onBlur={handleBlur}
 									/>
+									
 									<FormikTextField
 										label="Choose Template"
 										name='templateName'
 										errors={errors}
 										touched={touched}
-										onChange={(value)=>values.templateName = value}
+										onChange={(value: any)=>values.templateName = value}
 										onBlur={handleBlur}
 										type='file'
 										accept='.html,.ejs'

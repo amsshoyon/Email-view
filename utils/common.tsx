@@ -67,7 +67,6 @@ export const CustomModal = ({open, toggle, children}: ModalProps)=> {
     )
 }
 
-
 export const ToBase64 = (file: any)=> new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
