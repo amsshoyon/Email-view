@@ -133,6 +133,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 									<FormikTextField
 										label="JSON format data"
 										name='data'
+										value={values.data}
 										errors={errors}
 										touched={touched}
 										onChange={handleChange}
