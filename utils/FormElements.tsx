@@ -1,7 +1,7 @@
-import { Visibility, VisibilityOff } from "@mui/icons-material"
-import { Chip, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
+import { Visibility, VisibilityOff, Preview } from "@mui/icons-material"
+import { Button, Chip, IconButton, InputAdornment, Link, TextField } from "@mui/material"
 import { Box } from "@mui/system"
-import React, { ChangeEventHandler, SetStateAction, useState } from "react"
+import React, { ChangeEventHandler, SetStateAction, useEffect, useState } from "react"
 import { ToBase64 } from "./common"
 import { EmailRegex } from "./validator"
 
@@ -42,6 +42,10 @@ export const MultiValueInput = (props: MultiValueInputProps) => {
         arr.splice(index, 1)
         setValues(arr)
     }
+
+    useEffect(()=>{
+        setValues(value ? value.split(',') : []);
+    },[value])
 
     const StackLabel = () => {
         return (
@@ -104,12 +108,14 @@ interface FormikTextFieldProps {
     className?: string,
     dynamicFieldName?: string,
     rows?: number,
-    multiline?: boolean
+    multiline?: boolean,
+    url?: string
 }
 
 export const FormikTextField = (props: FormikTextFieldProps) => {
-    const { name, className='mb-6', type = 'text', label, onChange, onBlur, accept, value, errors, touched, dynamicFieldName, multiline=false, rows, ...rest } = props;
+    const { name, className='mb-6', type = 'text', label, onChange, onBlur, accept, value, errors, touched, dynamicFieldName, multiline=false, url, rows, ...rest } = props;
     const [showPassword, setShowPassword] = useState(false);
+    const [urlPath, setUrlPath] = useState(url);
     const fieldName = dynamicFieldName ? dynamicFieldName : name;
 
     const handleChange = async (e: any)=> {
@@ -117,9 +123,8 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
             const file = e.target.files[0];
             const base64 = await ToBase64(file);
             onChange(base64);
-        } else {
-            onChange(e);
-        }
+            setUrlPath('')
+        } else onChange(e);
     }
 
     return (
@@ -146,17 +151,21 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
             InputProps={{
                 endAdornment:
                     type === "password" ? (
-                        <InputAdornment
-                            position="start"
-                            classes={{ positionStart: "0px" }}
-                        >
-                            <IconButton
-                                onClick={()=>setShowPassword(!showPassword)}
-                            >
+                        <InputAdornment position="start" classes={{ positionStart: "0px" }}>
+                            <IconButton onClick={()=>setShowPassword(!showPassword)} >
                                 {showPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                         </InputAdornment>
-                    ) : null,
+                    ) 
+                    : type === 'file' && urlPath ?
+                        <InputAdornment position="start" classes={{ positionStart: "0px" }}>
+                            <Button component={Link} href={urlPath} className='capitalize' target={'_blank'}>
+                                <Preview />&nbsp; Preview
+                            </Button>
+                            
+                        </InputAdornment>
+                    : null
+                    ,
             }}
             rows={rows}
             multiline={multiline}

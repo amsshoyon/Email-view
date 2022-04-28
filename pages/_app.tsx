@@ -10,7 +10,7 @@ import { observer } from 'mobx-react'
 import AuthStore from '@stores/AuthStore'
 import { useRouter } from 'next/router'
 import Layout from '@components/Layout/Layout'
-import '../styles/globals.scss'
+import '../styles/globals.css'
 import 'material-react-toastify/dist/ReactToastify.css';
 
 export type NextApplicationPage<P = any, IP = P> = NextPage<P, IP> & {

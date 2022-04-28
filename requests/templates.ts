@@ -3,18 +3,7 @@ import axios from 'axios';
 const baseUrl = '/api/templates';
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-export const getAllService = async (): Promise<any> => {
-    try {
-        let result = await axios.get(`${baseUrl}`);
-        if(result.data) return result.data;
-        return null
-    } catch (error) {
-        console.log('error:', error)
-        return null
-    }
-}
-
-export const getServiceById = async (id: number): Promise<any> => {
+export const getTemplateById = async (id: number): Promise<any> => {
     try {
         let result = await axios.get(`${baseUrl}?id=${id}`);
         if(result.data) return result.data;

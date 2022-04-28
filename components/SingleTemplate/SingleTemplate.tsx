@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AttachmentForm from '@components/Forms/AttachmentForm'
 import { ServiceActionType } from '@enums/enums'
-import { Button, Divider, Grid, Typography } from '@mui/material'
+import { Button, Divider, Grid, Link, Typography } from '@mui/material'
 import { Notify } from '@utils/common'
 import { FormikTextField, MultiValueInput } from '@utils/FormElements'
 import { FieldArray, Form, Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import { useRouter } from 'next/router'
-import { createTemplate } from 'requests/templates'
+import { createTemplate, getTemplateById } from 'requests/templates'
 
 interface pageProps {
 	type: ServiceActionType
@@ -19,61 +19,77 @@ interface AttachmentValues {
 }
 
 interface FieldValues {
-	serviceId: any;
+	serviceId: number;
 	title: string;
 	cc?: string;
 	bcc?: string
 	data?: string
 	templateName?: any;
-	attachment?: AttachmentValues[] | [];
-
+	attachment?: AttachmentValues[] | [] | null;
 }
-
-const validationSchema = Yup.object().shape({
-	serviceId: Yup.number().required('Field required'),
-	title: Yup.string().required('Field required'),
-	templateName: Yup.mixed().required('File is required'),
-	data: Yup.string().required('Field required'),
-	cc: Yup.string().required('Field required'),
-	bcc: Yup.string().required('Field required'),
-	attachment: Yup.array().of(
-		Yup.object().shape({
-			attachmentName: Yup.mixed().required('File is required'),
-			attachmentData: Yup.string().required('Field required'),
-		})
-	)
-});
 
 const SingleTemplate = ({ type }: pageProps) => {
 	const router = useRouter();
-	const id = router.query.id;
-
+	const id = parseInt(router.query.id as string, 10);
 	const initialValues = {
 		serviceId: id,
-		title: 'Test Title',
-		templateName: '',
-		data: '{test data}',
-		cc: 'amssshoyon@gmail.com,raniahridi@gmail.com',
-		bcc: 'tech@sheba.xyz',
+		title: '',
+		templateName:'',
+		data: '',
+		cc: '',
+		bcc: '',
 		attachment: []
+	}
+	const [data, setData] = useState<FieldValues>(initialValues);
+
+	const validationSchema = Yup.object().shape({
+		serviceId: Yup.number().required('Field required'),
+		title: Yup.string().required('Field required'),
+		templateName: type === ServiceActionType.ADD ? Yup.mixed().required('File is required') : Yup.mixed(),
+		data: Yup.string().required('Field required'),
+		cc: Yup.string(),
+		bcc: Yup.string(),
+		attachment: Yup.array().of(
+			Yup.object().shape({
+				attachmentName: Yup.mixed().required('File is required'),
+				attachmentData: type === ServiceActionType.ADD ? Yup.mixed().required('File is required') : Yup.mixed(),
+			})
+		)
+	});
+
+	const getTemplateData = async ()=> {
+		let res = await getTemplateById(id);
+		if (res?.statusCode === 200) setData({
+			...data,
+			title: res.data.title,
+			templateName: res.data.templateName,
+			data: res.data.data,
+			cc: res.data.cc,
+			bcc: res.data.bcc,
+			attachment: res.data.attachment
+		});
+		else Notify(res?.message, 'error');
 	}
 
 	const handleSubmit = async (values: FieldValues, setSubmitting: any) => {
 		let res = await createTemplate(values);
-			if (res?.statusCode === 201) {
-				Notify('Template added', 'success');
-			} else {
-				Notify(res?.message, 'error');
-			}
-			setSubmitting(false);
+		if (res?.statusCode === 201) Notify('Template added', 'success');
+		else Notify(res?.message, 'error');
+		setSubmitting(false);
 	}
+
+	useEffect(()=>{
+		if(type === ServiceActionType.EDIT) getTemplateData();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[])
 	
 
 	return (
 		<React.Fragment>
 			<Typography variant='h5' mb={4}>Email Settings</Typography>
 			<Formik 
-				initialValues={initialValues} 
+				enableReinitialize={true}
+				initialValues={data}
 				validationSchema={validationSchema} 
 				onSubmit={(values, { setSubmitting }) => {
 					handleSubmit(values, setSubmitting);
@@ -99,6 +115,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 									<FormikTextField
 										label="Choose Template"
 										name='templateName'
+										url={values.templateName}
 										errors={errors}
 										touched={touched}
 										onChange={(value: any)=>values.templateName = value}
@@ -148,7 +165,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 							<FieldArray name="attachment"
 								render={arrayHelpers => (
 									<React.Fragment>
-										{values.attachment.map((key: any, i: number) => (
+										{values.attachment && values.attachment.map((key: any, i: number) => (
 											<AttachmentForm key={i}
 												index={i}
 												id={key}
@@ -161,7 +178,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 											/>
 										))}
 										<div className="flex">
-											<Button variant="contained" color='info' className='mr-3' type='submit'>Save</Button>
+											<Button variant="contained" color='info' className='mr-3' type='submit' disabled={isSubmitting}>Save</Button>
 											<Button variant="contained" onClick={() => arrayHelpers.push({ attachmentName: '', attachmentData: '' })}>
 												Add Attachment
 											</Button>

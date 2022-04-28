@@ -37,7 +37,8 @@ const AttachmentForm = ({ index, id, className, onDelete, errors, touched, handl
                             errors={errorState ? errorState : {}}
                             touched={touchState ? touchState : {}}
                             type='file'
-                            onChange={(value)=>values.attachment[index].attachmentName = value}
+                            url={values.attachment[index].attachmentName}
+                            onChange={(value: any)=>values.attachment[index].attachmentName = value}
 							onBlur={handleBlur}
                             accept='.html,.ejs'
                         />
