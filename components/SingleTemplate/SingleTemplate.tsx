@@ -19,7 +19,7 @@ interface AttachmentValues {
 }
 
 interface FieldValues {
-	serviceId: number;
+	serviceId: number | null;
 	title: string;
 	cc?: string;
 	bcc?: string
@@ -30,17 +30,16 @@ interface FieldValues {
 
 const SingleTemplate = ({ type }: pageProps) => {
 	const router = useRouter();
-	const id = parseInt(router.query.id as string, 10);
-	const initialValues = {
-		serviceId: id,
+	
+	const [data, setData] = useState<FieldValues>({
+		serviceId: null,
 		title: '',
 		templateName:'',
 		data: '',
 		cc: '',
 		bcc: '',
 		attachment: []
-	}
-	const [data, setData] = useState<FieldValues>(initialValues);
+	});
 
 	const validationSchema = Yup.object().shape({
 		serviceId: Yup.number().required('Field required'),
@@ -57,7 +56,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 		)
 	});
 
-	const getTemplateData = async ()=> {
+	const getTemplateData = async (id: number)=> {
 		let res = await getTemplateById(id);
 		if (res?.statusCode === 200) setData({
 			...data,
@@ -79,9 +78,13 @@ const SingleTemplate = ({ type }: pageProps) => {
 	}
 
 	useEffect(()=>{
-		if(type === ServiceActionType.EDIT) getTemplateData();
+		if(router.query.id) {
+			const id = parseInt(router.query.id as string, 10);
+			setData({...data, serviceId: id});
+			if(type === ServiceActionType.EDIT) getTemplateData(id);
+		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[])
+	},[router])
 	
 
 	return (
@@ -99,7 +102,6 @@ const SingleTemplate = ({ type }: pageProps) => {
 					const { values, touched, errors, handleBlur, handleChange, isSubmitting } = props
 					return (
 						<Form noValidate autoComplete="off">
-							<input type='hidden' name='serviceId' value={values.serviceId} />
 							<Grid container spacing={2} className="mb-6">
 								<Grid item xs={4}>
 									<FormikTextField

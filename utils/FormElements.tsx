@@ -113,7 +113,7 @@ interface FormikTextFieldProps {
 }
 
 export const FormikTextField = (props: FormikTextFieldProps) => {
-    const { name, className='mb-6', type = 'text', label, onChange, onBlur, accept, value, errors, touched, dynamicFieldName, multiline=false, url, rows, ...rest } = props;
+    const { name, className='mb-6', type = 'text', label, onChange, onBlur, accept, value='', errors, touched, dynamicFieldName, multiline=false, url, rows, ...rest } = props;
     const [showPassword, setShowPassword] = useState(false);
     const [urlPath, setUrlPath] = useState(url);
     const fieldName = dynamicFieldName ? dynamicFieldName : name;
@@ -138,7 +138,7 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
             name={name}
             variant="outlined"
             className={className}
-            value={value ? value : null}
+            value={value}
             fullWidth
             onChange={(e)=> handleChange(e)}
             onBlur={onBlur}
