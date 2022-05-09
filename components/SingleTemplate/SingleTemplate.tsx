@@ -52,7 +52,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 		attachment: Yup.array().of(
 			Yup.object().shape({
 				attachmentName: Yup.mixed().required('File is required'),
-				attachmentData: type === ServiceActionType.ADD ? Yup.mixed().required('File is required') : Yup.mixed(),
+				attachmentData: type === ServiceActionType.ADD ? Yup.mixed().required('Data is required') : Yup.mixed(),
 			})
 		)
 	});

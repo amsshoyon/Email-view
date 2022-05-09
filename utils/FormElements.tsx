@@ -118,6 +118,10 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
     const [urlPath, setUrlPath] = useState(url);
     const fieldName = dynamicFieldName ? dynamicFieldName : name;
 
+    useEffect(()=>{
+        setUrlPath(url)
+    },[url])
+
     const handleChange = async (e: any)=> {
         if(type === 'file') {
             const file = e.target.files[0];
@@ -134,7 +138,7 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
             name={name}
             variant="outlined"
             className={className}
-            value={value}
+            value={value ? value : null}
             fullWidth
             onChange={(e)=> handleChange(e)}
             onBlur={onBlur}
@@ -159,7 +163,7 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
                     ) 
                     : type === 'file' && urlPath ?
                         <InputAdornment position="start" classes={{ positionStart: "0px" }}>
-                            <Button component={Link} href={urlPath} className='capitalize' target={'_blank'}>
+                            <Button component={Link} href={`${process.env.FILE_URL}/${urlPath}`} className='capitalize' target={'_blank'}>
                                 <Preview />&nbsp; Preview
                             </Button>
                             
