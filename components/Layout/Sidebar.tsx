@@ -1,15 +1,15 @@
 import { Box, Drawer, List, Toolbar, Typography } from '@mui/material'
 import { CustomLink } from '@utils/common'
-import HomeIcon from '@mui/icons-material/Home';
+import { Dashboard, Settings, Apps, FileCopy } from '@mui/icons-material';
 import React from 'react'
 import { Theme } from '@helpers/theme';
 
 const drawerWidth = 280;
 const menus = [
-    { url: "/", title: "Dashboard", icon: <HomeIcon /> },
-    { url: "/", title: "Templates", icon: <HomeIcon /> },
-    { url: "/services", title: "Services", icon: <HomeIcon /> },
-    { url: "/", title: "Configs", icon: <HomeIcon /> }
+    { url: "/", title: "Dashboard", icon: <Dashboard /> },
+    { url: "/", title: "Templates", icon: <FileCopy /> },
+    { url: "/services", title: "Services", icon: <Apps /> },
+    { url: "/configs", title: "Configs", icon: <Settings /> }
 ]
 
 const DrawerStyles = {
