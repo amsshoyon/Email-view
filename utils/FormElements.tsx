@@ -115,11 +115,12 @@ interface FormikTextFieldProps {
 export const FormikTextField = (props: FormikTextFieldProps) => {
     const { name, className='mb-6', type = 'text', label, onChange, onBlur, accept, value='', errors, touched, dynamicFieldName, multiline=false, filename, rows, ...rest } = props;
     const [showPassword, setShowPassword] = useState(false);
-    const [urlPath, setUrlPath] = useState(filename);
+    const [isChanged, setIsChanged] = useState(false);
+    const [urlPath, setUrlPath] = useState('');
     const fieldName = dynamicFieldName ? dynamicFieldName : name;
-
+    
     useEffect(()=>{
-        setUrlPath(filename)
+        filename && setUrlPath(filename)
     },[filename])
 
     const handleChange = async (e: any)=> {
@@ -127,7 +128,7 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
             const file = e.target.files[0];
             const base64 = await ToBase64(file);
             onChange(base64);
-            setUrlPath('')
+            setIsChanged(true);
         } else onChange(e);
     }
 
@@ -138,7 +139,7 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
             name={name}
             variant="outlined"
             className={className}
-            value={value}
+            {...(type !== 'file' && {value: value})}
             fullWidth
             onChange={(e)=> handleChange(e)}
             onBlur={onBlur}
@@ -161,7 +162,7 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
                             </IconButton>
                         </InputAdornment>
                     ) 
-                    : type === 'file' && urlPath ?
+                    : type === 'file' && urlPath && !isChanged ?
                         <InputAdornment position="start" classes={{ positionStart: "0px" }}>
                             <Button component={Link} href={`/api/files/${urlPath}`} className='capitalize' target={'_blank'}>
                                 <Preview />&nbsp; Preview
@@ -169,7 +170,6 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
                             
                         </InputAdornment>
                     : null
-                    ,
             }}
             rows={rows}
             multiline={multiline}
