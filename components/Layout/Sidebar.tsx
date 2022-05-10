@@ -14,6 +14,7 @@ const menus = [
 
 const DrawerStyles = {
     width: drawerWidth,
+    height: '100%',
     flexShrink: 0,
     backgroundColor: "#000",
     [`& .MuiDrawer-paper`]: { 

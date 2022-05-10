@@ -6,7 +6,8 @@ import { getUser } from 'requests/auth';
 class Auth {
 	isLoggedIn: boolean = false
 	user: User | null = null
-	redirectToPath: string = ''
+	redirectToPath: URL | string = ''
+	isFetching: boolean = true
 
 	constructor() {
 		makeAutoObservable(this);
@@ -24,6 +25,7 @@ class Auth {
 				this.logout();
 			}
 		}
+		this.isFetching = false;
 	}
 
 	setUser = (user:User) => {
@@ -35,13 +37,16 @@ class Auth {
 		this.redirectToPath = ''
 	}
 
+	setRedirectPath = (path: URL | string)=> {
+		this.redirectToPath = path
+	}
+
 	logout = ()=> {
 		this.isLoggedIn = false;
 		this.user = null;
 		deleteCookie('accessToken');
-		this.redirectToPath = '/auth/login'
+		this.setRedirectPath('/auth/login');
 	}
-
 }
 
 const AuthStore = new Auth()

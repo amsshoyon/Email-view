@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
-import LoginContent from '@components/Auth/LoginContent/LoginContent'
+import LoginContent from '@components/Auth/LoginContent'
 
 const Login = () => {
 

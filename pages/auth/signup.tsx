@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
-import RegisterContent from '@components/Auth/RegisterContent/RegisterContent'
+import RegisterContent from '@components/Auth/RegisterContent'
 
 const SignUp = () => {
 
