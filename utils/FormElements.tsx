@@ -109,18 +109,18 @@ interface FormikTextFieldProps {
     dynamicFieldName?: string,
     rows?: number,
     multiline?: boolean,
-    url?: string
+    filename?: string
 }
 
 export const FormikTextField = (props: FormikTextFieldProps) => {
-    const { name, className='mb-6', type = 'text', label, onChange, onBlur, accept, value='', errors, touched, dynamicFieldName, multiline=false, url, rows, ...rest } = props;
+    const { name, className='mb-6', type = 'text', label, onChange, onBlur, accept, value='', errors, touched, dynamicFieldName, multiline=false, filename, rows, ...rest } = props;
     const [showPassword, setShowPassword] = useState(false);
-    const [urlPath, setUrlPath] = useState(url);
+    const [urlPath, setUrlPath] = useState(filename);
     const fieldName = dynamicFieldName ? dynamicFieldName : name;
 
     useEffect(()=>{
-        setUrlPath(url)
-    },[url])
+        setUrlPath(filename)
+    },[filename])
 
     const handleChange = async (e: any)=> {
         if(type === 'file') {
@@ -163,7 +163,7 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
                     ) 
                     : type === 'file' && urlPath ?
                         <InputAdornment position="start" classes={{ positionStart: "0px" }}>
-                            <Button component={Link} href={`${process.env.FILE_URL}/${urlPath}`} className='capitalize' target={'_blank'}>
+                            <Button component={Link} href={`/api/files/${urlPath}`} className='capitalize' target={'_blank'}>
                                 <Preview />&nbsp; Preview
                             </Button>
                             

@@ -117,7 +117,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 									<FormikTextField
 										label="Choose Template"
 										name='templateName'
-										url={values.templateName}
+										filename={values.templateName}
 										errors={errors}
 										touched={touched}
 										onChange={(value: any)=>values.templateName = value}
