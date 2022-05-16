@@ -126,9 +126,11 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
     const handleChange = async (e: any)=> {
         if(type === 'file') {
             const file = e.target.files[0];
-            const base64 = await ToBase64(file);
-            onChange(base64);
-            setIsChanged(true);
+            if(file){
+                const base64 = await ToBase64(file);
+                onChange(base64);
+                setIsChanged(true);
+            }
         } else onChange(e);
     }
 
@@ -139,7 +141,7 @@ export const FormikTextField = (props: FormikTextFieldProps) => {
             name={name}
             variant="outlined"
             className={className}
-            {...(type !== 'file' && {value: value})}
+            {...(type !== 'file' && {value: (typeof value === 'string' ? value : JSON.stringify(value))})}
             fullWidth
             onChange={(e)=> handleChange(e)}
             onBlur={onBlur}

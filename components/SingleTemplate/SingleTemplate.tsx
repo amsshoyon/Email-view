@@ -23,8 +23,8 @@ interface FieldValues {
 	title: string;
 	cc?: string;
 	bcc?: string
-	data?: string
-	templateName?: any;
+	templateName?: string;
+	templateData?: string
 	attachment?: AttachmentValues[] | [] | null;
 }
 
@@ -35,7 +35,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 		serviceId: null,
 		title: '',
 		templateName:'',
-		data: '',
+		templateData: '',
 		cc: '',
 		bcc: '',
 		attachment: []
@@ -45,7 +45,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 		serviceId: Yup.number().required('Field required'),
 		title: Yup.string().required('Field required'),
 		templateName: type === ServiceActionType.ADD ? Yup.mixed().required('File is required') : Yup.mixed(),
-		data: Yup.string().required('Field required'),
+		templateData: Yup.string().required('Field required'),
 		cc: Yup.string(),
 		bcc: Yup.string(),
 		attachment: Yup.array().of(
@@ -62,7 +62,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 			...data,
 			title: res.data.title,
 			templateName: res.data.templateName,
-			data: res.data.data,
+			templateData: JSON.stringify(res.data.templateData),
 			cc: res.data.cc,
 			bcc: res.data.bcc,
 			attachment: res.data.attachment
@@ -151,8 +151,8 @@ const SingleTemplate = ({ type }: pageProps) => {
 								<Grid item xs={8}>
 									<FormikTextField
 										label="JSON format data"
-										name='data'
-										value={values.data}
+										name='templateData'
+										value={values.templateData}
 										errors={errors}
 										touched={touched}
 										onChange={handleChange}
