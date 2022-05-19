@@ -4,11 +4,11 @@ import React from 'react'
 import { Formik, Form, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import { FormikTextField } from '@utils/FormElements';
-import { createService } from 'requests/services';
 import { observer } from 'mobx-react';
-import ServiceStore from '@stores/ServiceStore';
+import { createProject } from 'requests/projects';
+import ProjectStore from '@stores/ProjectStore';
 
-interface AddServiceModalProps {
+interface AddProjectModalProps {
     open: boolean,
     toggle: Function
 }
@@ -21,18 +21,18 @@ const FormSchema = Yup.object().shape({
     title: Yup.string().min(2, 'Too Short!').max(150, 'Too Long!').required('Field required')
 });
 
-const AddServiceModal = ({ open, toggle }: AddServiceModalProps) => {
+const AddProjectModal = ({ open, toggle }: AddProjectModalProps) => {
     const FormInitialValue = {
         title: ''
     }
 
     const handleSubmit = async (values: FormFields, setSubmitting: any, resetForm: any) => {
-        let res = await createService(values);
+        let res = await createProject(values);
         if (res?.statusCode === 201) {
-            ServiceStore.addService(res.data);
+            ProjectStore.addProject(res.data);
             resetForm();
             toggle();
-            Notify('Service added', 'success');
+            Notify('Project added', 'success');
         } else {
             Notify(res?.message, 'error');
         }
@@ -42,7 +42,7 @@ const AddServiceModal = ({ open, toggle }: AddServiceModalProps) => {
     return (
         <CustomModal open={open} toggle={toggle}>
             <Typography variant="h6" component="h6" className='pb-4' color="text.secondary">
-                Add Service
+                Add Project
             </Typography>
             <Formik 
                 initialValues={FormInitialValue} 
@@ -56,7 +56,7 @@ const AddServiceModal = ({ open, toggle }: AddServiceModalProps) => {
                     return (
                         <Form>
                             <FormikTextField 
-                                label="Service name"
+                                label="Project name"
                                 name='title'
                                 value={values.title}
                                 errors={errors}
@@ -76,6 +76,6 @@ const AddServiceModal = ({ open, toggle }: AddServiceModalProps) => {
     )
 }
 
-export default observer(AddServiceModal)
+export default observer(AddProjectModal)
 
 

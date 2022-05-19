@@ -1,13 +1,13 @@
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material'
 import React from 'react'
 
-interface ServiceCardProp {
+interface ProjectCardProp {
 	onClick: Function,
 	id: string | number,
 	name: string
 }
 
-const ServiceCard = ({onClick, id, name}: ServiceCardProp) => {
+const ProjectCard = ({onClick, id, name}: ProjectCardProp) => {
 	return (
 		<React.Fragment>
 			<Card>
@@ -23,4 +23,4 @@ const ServiceCard = ({onClick, id, name}: ServiceCardProp) => {
 	)
 }
 
-export default ServiceCard
+export default ProjectCard

@@ -8,7 +8,7 @@ const drawerWidth = 280;
 const menus = [
     { url: "/", title: "Dashboard", icon: <Dashboard /> },
     { url: "/", title: "Templates", icon: <FileCopy /> },
-    { url: "/services", title: "Services", icon: <Apps /> },
+    { url: "/projects", title: "Projects", icon: <Apps /> },
     { url: "/configs", title: "Configs", icon: <Settings /> }
 ]
 

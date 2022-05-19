@@ -3,20 +3,20 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 import { Box } from '@mui/system'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { Service, Template } from 'types/types';
-import { getServiceById } from 'requests/services';
+import { Project, Template } from 'types/types';
+import { getProjectById } from 'requests/projects';
 
 interface TemplateListDrawerProps {
     show: boolean;
     onClose: Function;
-    service: Service | null;
+    project: Project | null;
 }
 
-const TemplateListDrawer = ({ show, onClose, service }: TemplateListDrawerProps) => {
+const TemplateListDrawer = ({ show, onClose, project }: TemplateListDrawerProps) => {
     const [templates, setTemplates] = useState<Template[]>([]);
 
-    const getService = async () => {
-        let res = await getServiceById(service ? service.id : 0);
+    const getProject = async () => {
+        let res = await getProjectById(project ? project.id : 0);
         if(res.statusCode === 200){
             setTemplates(res.data.templates);
         }
@@ -24,9 +24,9 @@ const TemplateListDrawer = ({ show, onClose, service }: TemplateListDrawerProps)
 
     
     useEffect(() => {
-        getService();
+        getProject();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [service?.id])
+    }, [project?.id])
     
     return (
         <Drawer anchor={'right'} open={show} onClose={() => {onClose()}} >
@@ -43,7 +43,7 @@ const TemplateListDrawer = ({ show, onClose, service }: TemplateListDrawerProps)
                     </Box>
                     {(templates && templates.length) 
                         ? templates.map((item: Template, i: number)=> 
-                            <Link href={`services/${item.id}`} passHref key={i}>
+                            <Link href={`projects/${item.id}`} passHref key={i}>
                                 <ListItem button component="a">
                                     <ListItemIcon sx={{ minWidth: '34px' }}>
                                         <ModeEditOutlineOutlinedIcon />
@@ -56,7 +56,7 @@ const TemplateListDrawer = ({ show, onClose, service }: TemplateListDrawerProps)
                     }
                 </List>
                 <Box className='px-4'>
-                    <Link href={`/services/add/${service?.id}`} passHref>
+                    <Link href={`/projects/add/${project?.id}`} passHref>
                         <Button component='a' variant='contained' className='w-full mb-8'>Add</Button>
                     </Link>
                 </Box>

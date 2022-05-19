@@ -5,10 +5,10 @@ export interface Template {
     data: string,
     attachment: string,
     isActive: true,
-    serviceId: number
+    projectId: number
 }
 
-export interface Service {
+export interface Project {
     id: number
     title: string,
     templates?: Template[] | []

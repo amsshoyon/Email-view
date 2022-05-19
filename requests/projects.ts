@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const baseUrl = '/api/services';
+const baseUrl = '/api/projects';
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-export const getAllService = async (): Promise<any> => {
+export const getAllProject = async (): Promise<any> => {
     try {
         let result = await axios.get(`${baseUrl}`);
         if(result.data) return result.data;
@@ -14,7 +14,7 @@ export const getAllService = async (): Promise<any> => {
     }
 }
 
-export const getServiceById = async (id: number): Promise<any> => {
+export const getProjectById = async (id: number): Promise<any> => {
     try {
         let result = await axios.get(`${baseUrl}?id=${id}`);
         if(result.data) return result.data;
@@ -25,7 +25,7 @@ export const getServiceById = async (id: number): Promise<any> => {
     }
 }
 
-export const createService = async (values: any): Promise<any> => {
+export const createProject = async (values: any): Promise<any> => {
     try {
         let result = await axios.post(`${baseUrl}`, values);
         if(result.data) return result.data;

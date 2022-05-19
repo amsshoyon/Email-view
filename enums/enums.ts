@@ -1,4 +1,4 @@
-export enum ServiceActionType {
+export enum ProjectActionType {
 	ADD = 'add',
 	EDIT = 'edit'
 }

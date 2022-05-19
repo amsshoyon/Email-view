@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AttachmentForm from '@components/Forms/AttachmentForm'
-import { ServiceActionType } from '@enums/enums'
+import { ProjectActionType } from '@enums/enums'
 import { Button, Divider, Grid, Link, Typography } from '@mui/material'
 import { Notify } from '@utils/common'
 import { FormikTextField, MultiValueInput } from '@utils/FormElements'
@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import { createTemplate, getTemplateById } from 'requests/templates'
 
 interface pageProps {
-	type: ServiceActionType
+	type: ProjectActionType
 }
 
 interface AttachmentValues {
@@ -19,7 +19,7 @@ interface AttachmentValues {
 }
 
 interface FieldValues {
-	serviceId: number | null;
+	projectId: number | null;
 	title: string;
 	cc?: string;
 	bcc?: string
@@ -32,7 +32,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 	const router = useRouter();
 	
 	const [data, setData] = useState<FieldValues>({
-		serviceId: null,
+		projectId: null,
 		title: '',
 		templateName:'',
 		templateData: '',
@@ -42,16 +42,16 @@ const SingleTemplate = ({ type }: pageProps) => {
 	});
 
 	const validationSchema = Yup.object().shape({
-		serviceId: Yup.number().required('Field required'),
+		projectId: Yup.number().required('Field required'),
 		title: Yup.string().required('Field required'),
-		templateName: type === ServiceActionType.ADD ? Yup.mixed().required('File is required') : Yup.mixed(),
+		templateName: type === ProjectActionType.ADD ? Yup.mixed().required('File is required') : Yup.mixed(),
 		templateData: Yup.string().required('Field required'),
 		cc: Yup.string(),
 		bcc: Yup.string(),
 		attachment: Yup.array().of(
 			Yup.object().shape({
 				attachmentName: Yup.mixed().required('File is required'),
-				attachmentData: type === ServiceActionType.ADD ? Yup.mixed().required('Data is required') : Yup.mixed(),
+				attachmentData: type === ProjectActionType.ADD ? Yup.mixed().required('Data is required') : Yup.mixed(),
 			})
 		)
 	});
@@ -80,8 +80,8 @@ const SingleTemplate = ({ type }: pageProps) => {
 	useEffect(()=>{
 		if(router.query.id) {
 			const id = parseInt(router.query.id as string, 10);
-			setData({...data, serviceId: id});
-			if(type === ServiceActionType.EDIT) getTemplateData(id);
+			setData({...data, projectId: id});
+			if(type === ProjectActionType.EDIT) getTemplateData(id);
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[router])

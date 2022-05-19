@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const method = req.method;
 
     if( method === 'GET'){
-        await fetch(`${process.env.API_BASE_URL}/service/${id ? id : ''}`, {
+        await fetch(`${process.env.API_BASE_URL}/project/${id ? id : ''}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             })
     }
     if( method === 'POST'){
-        await fetch(`${process.env.API_BASE_URL}/service`, {
+        await fetch(`${process.env.API_BASE_URL}/project`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
