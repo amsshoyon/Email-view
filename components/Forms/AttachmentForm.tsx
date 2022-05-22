@@ -5,7 +5,6 @@ import React from 'react'
 import { FormikTextField } from '@utils/FormElements'
 
 interface AttachmentFormProps {
-    id: number,
     className?: string,
     onDelete: Function,
     index: number,
@@ -16,7 +15,7 @@ interface AttachmentFormProps {
     values: any
 }
 
-const AttachmentForm = ({ index, id, className, onDelete, errors, touched, handleBlur, handleChange, values }: AttachmentFormProps) => {
+const AttachmentForm = ({ index, className, onDelete, errors, touched, handleBlur, handleChange, values }: AttachmentFormProps) => {
     const errorState = errors && errors.attachment && errors.attachment[index];
     const touchState = touched && touched.attachment && touched.attachment[index];
     return (
@@ -24,7 +23,7 @@ const AttachmentForm = ({ index, id, className, onDelete, errors, touched, handl
             <Box className={className}>
                 <Box className="flex items-center justify-between mb-4">
                     <Typography variant='h5'>Attachment {index + 1 }</Typography>
-                    <IconButton color='error' onClick={()=>onDelete(id)}>
+                    <IconButton color='error' onClick={()=>onDelete(index)}>
                         <DeleteIcon />
                     </IconButton>
                 </Box>

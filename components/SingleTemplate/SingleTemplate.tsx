@@ -4,7 +4,7 @@ import { ProjectActionType } from '@enums/enums'
 import { Button, Divider, Grid, Link, Typography } from '@mui/material'
 import { Notify } from '@utils/common'
 import { FormikTextField, MultiValueInput } from '@utils/FormElements'
-import { FieldArray, Form, Formik, FormikProps } from 'formik'
+import { Form, Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import { useRouter } from 'next/router'
 import { createTemplate, getTemplateById } from 'requests/templates'
@@ -30,6 +30,14 @@ interface FieldValues {
 
 const SingleTemplate = ({ type }: pageProps) => {
 	const router = useRouter();
+
+	const [Attachments, setAttachments] = useState<{}[]>([]);
+
+	const removeAttachment = (i: number)=> {
+		let arr = [...Attachments];
+		arr.splice(i, 1);
+		setAttachments(arr);
+	}
 	
 	const [data, setData] = useState<FieldValues>({
 		projectId: null,
@@ -86,7 +94,6 @@ const SingleTemplate = ({ type }: pageProps) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[router])
 	
-
 	return (
 		<React.Fragment>
 			<Typography variant='h5' mb={4}>Email Settings</Typography>
@@ -94,7 +101,7 @@ const SingleTemplate = ({ type }: pageProps) => {
 				enableReinitialize={true}
 				initialValues={data}
 				validationSchema={validationSchema} 
-				onSubmit={(values, { setSubmitting }) => {
+				onSubmit={(values: FieldValues, { setSubmitting }: any) => {
 					handleSubmit(values, setSubmitting);
 				}}
 			>
@@ -164,30 +171,34 @@ const SingleTemplate = ({ type }: pageProps) => {
 							</Grid>
 
 							<Divider className='mb-6' />
-							<FieldArray name="attachment"
-								render={arrayHelpers => (
-									<React.Fragment>
-										{values.attachment && values.attachment.map((key: any, i: number) => (
-											<AttachmentForm key={i}
-												index={i}
-												id={key}
-												onDelete={() => arrayHelpers.remove(i)}
-												values={values}
-												touched={touched}
-												errors={errors}
-												handleBlur={handleBlur}
-												handleChange={handleChange}
-											/>
-										))}
-										<div className="flex">
-											<Button variant="contained" color='info' className='mr-3' type='submit' disabled={isSubmitting}>Save</Button>
-											<Button variant="contained" onClick={() => arrayHelpers.push({ attachmentName: '', attachmentData: '' })}>
-												Add Attachment
-											</Button>
-										</div>
-									</React.Fragment>
-								)}
-							/>
+
+							{Attachments.length > 0 && Attachments.map((attachment, i) => 
+								<AttachmentForm key={i}
+									index={i}
+									onDelete={(i: number) => {
+										removeAttachment(i);
+										let arr = [...values.attachment]
+										arr.splice(i, 1);
+										values.attachment = arr;
+									}}
+									values={values}
+									touched={touched}
+									errors={errors}
+									handleBlur={handleBlur}
+									handleChange={handleChange}
+								/>
+							)}
+							<div className="flex">
+								<Button variant="contained" color='info' className='mr-3' type='submit' disabled={isSubmitting}>Save</Button>
+								<Button variant="contained" 
+									onClick={() => {
+										values.attachment.push({ attachmentName: '', attachmentData: '' })
+										setAttachments([...Attachments, { attachmentName: '', attachmentData: '' }])
+									}}>
+									Add Attachment
+								</Button>
+							</div>
+
 						</Form>
 					)
 				}}
