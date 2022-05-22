@@ -17,3 +17,9 @@ services:
             - .:/usr/src/app
             - /usr/src/app/node_modules
         restart: unless-stopped
+        networks:
+            - mailer
+networks:
+  mailer:
+    external:
+      name: mailer

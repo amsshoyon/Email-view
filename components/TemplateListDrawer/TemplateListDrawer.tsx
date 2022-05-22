@@ -3,7 +3,7 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 import { Box } from '@mui/system'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { Project, Template } from 'types/types';
+import { Project, Template } from 'types';
 import { getProjectById } from 'requests/projects';
 
 interface TemplateListDrawerProps {

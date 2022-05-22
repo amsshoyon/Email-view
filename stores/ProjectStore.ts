@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import { Notify } from '@utils/common';
 import { getCookie } from '@utils/clientSideCookies';
 import { getAllProject } from 'requests/projects';
-import { Project as ProjectType } from 'types/types'
+import { Project as ProjectType } from 'types'
 
 class Project {
 	projects: ProjectType[] = [];

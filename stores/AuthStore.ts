@@ -1,6 +1,6 @@
 import { deleteCookie, getCookie } from '@utils/clientSideCookies';
 import { makeAutoObservable } from 'mobx'
-import { User } from 'types/user'
+import { User } from 'types'
 import { getUser } from 'requests/auth';
 
 class Auth {
@@ -28,7 +28,7 @@ class Auth {
 		this.isFetching = false;
 	}
 
-	setUser = (user:User) => {
+	setUser = (user: any) => {
 		this.user = user;
 	}
 

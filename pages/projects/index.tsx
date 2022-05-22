@@ -5,7 +5,7 @@ import { Button, Card, Grid, Typography } from '@mui/material'
 import ProjectStore from '@stores/ProjectStore'
 import { observer } from 'mobx-react'
 import React, { useState } from 'react'
-import { Project } from 'types/types'
+import { Project } from 'types'
 
 const Projects = () => {
 	const [templateListDrawer, setTemplateListDrawer] = useState<boolean>(false);

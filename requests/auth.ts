@@ -1,4 +1,4 @@
-import { AuthResponse } from '@types/user';
+import { AuthResponse } from 'types';
 import axios from 'axios';
 
 const baseUrl = '/api/auth';
